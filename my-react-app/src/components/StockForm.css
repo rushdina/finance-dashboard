@@ -1,0 +1,41 @@
+.stock-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.form-input {
+  background-color: aliceblue;
+  border: 1.5px solid #d1d4d0;
+  border-radius: 4px;
+  padding: 10px;
+  color: #111827;
+  width: 100%;
+}
+
+.form-input:focus {
+  outline: none; /* remove default browser outline */
+  border-color: #87c764;
+}
+
+.add-stock-btn {
+  background-color: #006e58;
+  border: none;
+}
+
+.add-stock-btn:hover {
+  background-color: #00876a;
+}
+
+@media (min-width: 770px) {
+  .stock-form {
+    flex-direction: row;
+  }
+
+  .form-input {
+    width: auto;
+  }
+}
