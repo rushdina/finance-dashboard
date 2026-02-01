@@ -5,7 +5,8 @@ import StockList from "./components/StockList.jsx";
 import StockContext from "./context/StockContext.jsx";
 
 function App() {
-  const [stocks, setStocks] = useState([]); // shared stock list state
+  // shared stock list state
+  const [stocks, setStocks] = useState([]); // array of objects
 
   function addStock(newStock) {
     setStocks((prevStockArray) => [...prevStockArray, newStock]);

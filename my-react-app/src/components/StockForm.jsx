@@ -1,33 +1,60 @@
 import "./StockForm.css";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import StockContext from "../context/StockContext.jsx";
 
 export default function StockForm() {
+  const { addStock } = useContext(StockContext);
+
   const [formInput, setFormInput] = useState({
-    stockSymbol: "",
+    symbol: "",
     quantity: "",
     purchasePrice: "",
   }); // object keys match form input "name" attributes
 
   function handleInputChange(event) {
     const { name, value } = event.target; // object destructure
-    setFormInput((prevInput) => {
-      return {
-        ...prevInput,
-        [name]: value, // formInput[event.target.name]: event.target.value
-      };
+    setFormInput((prevInput) => ({
+      ...prevInput,
+      [name]: value, // formInput[event.target.name]: event.target.value
+    }));
+  }
+
+  function handleSubmit(event) {
+    event.preventDefault();
+
+    // setStock((prev) => [
+    //   ...prev,
+    //   {
+    //     symbol: formInput.symbol.toUpperCase(),
+    //     quantity: parseFloat(formInput.quantity),
+    //     purchasePrice: parseFloat(formInput.purchasePrice),
+    //   },
+    // ]);
+
+    addStock({
+      symbol: formInput.symbol.toUpperCase(),
+      quantity: parseFloat(formInput.quantity),
+      purchasePrice: parseFloat(formInput.purchasePrice),
+    });
+
+    setFormInput({
+      symbol: "",
+      quantity: "",
+      purchasePrice: "",
     });
   }
 
   return (
     <div className="stock-form-container">
-      <form className="stock-form">
+      <form className="stock-form" onSubmit={handleSubmit}>
         <input
           type="text"
-          name="stockSymbol"
-          value={formInput.stockSymbol}
+          name="symbol"
+          value={formInput.symbol}
           onChange={handleInputChange}
           placeholder="Stock Symbol"
           className="form-input"
+          required
         />
         <input
           type="number"
@@ -36,6 +63,7 @@ export default function StockForm() {
           onChange={handleInputChange}
           placeholder="Quantity"
           className="form-input"
+          required
         />
         <input
           type="number"
@@ -44,8 +72,11 @@ export default function StockForm() {
           onChange={handleInputChange}
           placeholder="Purchase Price"
           className="form-input"
+          required
         />
-        <button className="add-stock-btn">Add Stock</button>
+        <button type="submit" className="add-stock-btn">
+          Add Stock
+        </button>
       </form>
     </div>
   );
