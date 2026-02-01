@@ -20,7 +20,6 @@ export default function StockForm() {
 
   return (
     <div className="stock-form-container">
-      <h1 className="page-title heading">Finance Dashboard</h1>
       <form className="stock-form">
         <input
           type="text"
