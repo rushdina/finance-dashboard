@@ -4,12 +4,22 @@ import StockContext from "../context/StockContext.jsx";
 
 export default function StockForm() {
   const { addStock } = useContext(StockContext);
+  // const { setStock } = useContext(StockContext);
 
   const [formInput, setFormInput] = useState({
     symbol: "",
     quantity: "",
     purchasePrice: "",
   }); // object keys match form input "name" attributes
+
+  // const fetchStockData = (symbol) => {
+  //    const API_KEY = "42ZEWT4IRU5YGZ8I";
+  //   fetch(
+  //     `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}}&apikey=${API_KEY}`,
+  //   )
+  //     .then((res) => res.json())
+  //     .then((data) => console.log(data));
+  // }
 
   function handleInputChange(event) {
     const { name, value } = event.target; // object destructure
@@ -22,11 +32,11 @@ export default function StockForm() {
   function handleSubmit(event) {
     event.preventDefault();
 
-    // setStock((prev) => [
-    //   ...prev,
+    // setStock((prevStockArr) => [
+    //   ...prevStockArr,
     //   {
     //     symbol: formInput.symbol.toUpperCase(),
-    //     quantity: parseFloat(formInput.quantity),
+    //     quantity: parseInt(formInput.quantity),
     //     purchasePrice: parseFloat(formInput.purchasePrice),
     //   },
     // ]);
