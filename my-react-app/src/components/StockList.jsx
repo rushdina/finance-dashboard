@@ -6,15 +6,13 @@ export default function StockList() {
   const { stocks } = useContext(StockContext);
 
   const stockListElements = stocks.map((stock) => (
-    <>
-      <li key={stock.symbol}>
-        <p>Symbol: {stock.symbol}</p>
-        <p>Quantity: {stock.quantity}</p>
-        <p>Purchase Price: {stock.purchasePrice}</p>
-        <p>Current Price: {stock.currentPrice}</p>
-        <p>Profit/Loss: </p>
-      </li>
-    </>
+    <li key={stock.symbol}>
+      <p>Symbol: {stock.symbol}</p>
+      <p>Quantity: {stock.quantity}</p>
+      <p>Purchase Price: {stock.purchasePrice}</p>
+      <p>Current Price: {stock.currentPrice}</p>
+      <p>Profit/Loss: </p>
+    </li>
   ));
 
   return (

@@ -7,6 +7,7 @@ import StockContext from "./context/StockContext.jsx";
 function App() {
   // shared stock list state
   const [stocks, setStocks] = useState([]); // array of objects
+  console.log(stocks);
   /*
   stocks = [
     {
@@ -19,6 +20,7 @@ function App() {
   ]
   */
 
+  // shared API data for StockForm and StockList
   // if have current price meaning the symbol is valid
   const fetchStockData = useCallback((symbol) => {
     const API_KEY = "42ZEWT4IRU5YGZ8I";
@@ -28,17 +30,19 @@ function App() {
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
+        // symbol validation for StockForm
         if (!data["Global Quote"] || !data["Global Quote"]["05. price"]) {
           return null; // resolves with null if symbol invalid
         } else {
+          // resolves with valid object
           return {
             symbol,
             currentPrice: parseFloat(data["Global Quote"]["05. price"]),
-          }; // resolves with valid object
+          }; // return object of user input symbol and currentPrice (for StockList)
         }
       })
       .catch((error) => {
-        console.error("Invalid symbol:", symbol, error);
+        console.error(error);
         return null; // resolves with null if fetch fails
       });
   }, []);

@@ -3,23 +3,13 @@ import { useContext, useState } from "react";
 import StockContext from "../context/StockContext.jsx";
 
 export default function StockForm() {
-  const { addStock } = useContext(StockContext);
-  // const { setStock } = useContext(StockContext);
+  const { addStock, fetchStockData } = useContext(StockContext);
 
   const [formInput, setFormInput] = useState({
     symbol: "",
     quantity: "",
     purchasePrice: "",
   }); // object keys match form input "name" attributes
-
-  // const fetchStockData = (symbol) => {
-  //    const API_KEY = "42ZEWT4IRU5YGZ8I";
-  //   fetch(
-  //     `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}}&apikey=${API_KEY}`,
-  //   )
-  //     .then((res) => res.json())
-  //     .then((data) => console.log(data));
-  // }
 
   function handleInputChange(event) {
     const { name, value } = event.target; // object destructure
@@ -32,25 +22,29 @@ export default function StockForm() {
   function handleSubmit(event) {
     event.preventDefault();
 
-    // setStock((prevStockArr) => [
-    //   ...prevStockArr,
-    //   {
-    //     symbol: formInput.symbol.toUpperCase(),
-    //     quantity: parseInt(formInput.quantity),
-    //     purchasePrice: parseFloat(formInput.purchasePrice),
-    //   },
-    // ]);
+    const symbol = formInput.symbol.trim().toUpperCase();
 
-    addStock({
-      symbol: formInput.symbol.toUpperCase(),
-      quantity: parseInt(formInput.quantity),
-      purchasePrice: parseFloat(formInput.purchasePrice),
-    });
+    // Validate symbol
+    // use .then because fetchStockData is asynchronous function returns a Promise
+    fetchStockData(symbol).then((result) => {
+      // result is the return object
+      if (!result) {
+        alert(`Invalid Stock Symbol: ${symbol}`);
+        return;
+      }
 
-    setFormInput({
-      symbol: "",
-      quantity: "",
-      purchasePrice: "",
+      addStock({
+        symbol,
+        quantity: parseInt(formInput.quantity),
+        purchasePrice: parseFloat(formInput.purchasePrice),
+        currentPrice: result.currentPrice,
+      });
+
+      setFormInput({
+        symbol: "",
+        quantity: "",
+        purchasePrice: "",
+      });
     });
   }
 
