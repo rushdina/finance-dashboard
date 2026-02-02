@@ -27,7 +27,7 @@ export default function StockForm() {
     // Validate symbol
     // use .then because fetchStockData is asynchronous function returns a Promise
     fetchStockData(symbol).then((result) => {
-      // result is the return object
+      // result is the return resolved object value
       if (!result) {
         alert(`Invalid Stock Symbol: ${symbol}`);
         return;

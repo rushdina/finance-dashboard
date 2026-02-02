@@ -21,7 +21,6 @@ function App() {
   */
 
   // shared API data for StockForm and StockList
-  // if have current price meaning the symbol is valid
   const fetchStockData = useCallback((symbol) => {
     const API_KEY = "42ZEWT4IRU5YGZ8I";
     return fetch(
@@ -29,11 +28,13 @@ function App() {
     )
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        // console.log(data);
         // symbol validation for StockForm
+        // if have current price meaning the symbol is valid
         if (!data["Global Quote"] || !data["Global Quote"]["05. price"]) {
           return null; // resolves with null if symbol invalid
         } else {
+          console.log(data); // only logs if symbol is valid
           // resolves with valid object
           return {
             symbol,
