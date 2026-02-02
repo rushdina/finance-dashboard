@@ -45,43 +45,41 @@ export default function StockForm() {
   }
 
   return (
-    <div className="stock-form-container">
-      <form className="stock-form" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="symbol"
-          value={formInput.symbol}
-          onChange={handleInputChange}
-          placeholder="Stock Symbol"
-          className="form-input"
-          required
-        />
-        <input
-          type="number"
-          name="quantity"
-          min="1" // prevent -ve values
-          step="1" // whole numbers only
-          value={formInput.quantity}
-          onChange={handleInputChange}
-          placeholder="Quantity"
-          className="form-input"
-          required
-        />
-        <input
-          type="number"
-          name="purchasePrice"
-          min="0.01" // prevent - ve values
-          step="0.01" // 2 decimals for price
-          value={formInput.purchasePrice}
-          onChange={handleInputChange}
-          placeholder="Purchase Price"
-          className="form-input"
-          required
-        />
-        <button type="submit" className="add-stock-btn">
-          Add Stock
-        </button>
-      </form>
-    </div>
+    <form className="stock-form" onSubmit={handleSubmit}>
+      <input
+        type="text"
+        name="symbol"
+        value={formInput.symbol}
+        onChange={handleInputChange}
+        placeholder="Stock Symbol"
+        className="form-input"
+        required
+      />
+      <input
+        type="number"
+        name="quantity"
+        min="1" // prevent -ve values
+        step="1" // whole numbers only
+        value={formInput.quantity}
+        onChange={handleInputChange}
+        placeholder="Quantity"
+        className="form-input"
+        required
+      />
+      <input
+        type="number"
+        name="purchasePrice"
+        min="0.01" // prevent - ve values
+        step="0.01" // 2 decimals for price
+        value={formInput.purchasePrice}
+        onChange={handleInputChange}
+        placeholder="Purchase Price"
+        className="form-input"
+        required
+      />
+      <button type="submit" className="add-stock-btn">
+        Add Stock
+      </button>
+    </form>
   );
 }

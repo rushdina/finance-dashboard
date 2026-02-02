@@ -1,31 +1,32 @@
 import "./StockList.css";
+import StockContext from "../context/StockContext";
+import { useContext } from "react";
 
 export default function StockList() {
-  return (
+  const { stocks } = useContext(StockContext);
+
+  const stockListElements = stocks.map((stock) => (
     <>
-      <h2 className="heading">Stock List</h2>
-      <div>
-        <p>No stocks added yet.</p>
-      </div>
-      <div className="stock-list-container">
-        <div className="stock-list-card">
-          <p>
-            Symbol: <span></span>
-          </p>
-          <p>
-            Quantity: <span></span>
-          </p>
-          <p>
-            Purchase Price: <span></span>
-          </p>
-          <p>
-            Current Price: <span></span>
-          </p>
-          <p>
-            Profit/Loss: <span></span>
-          </p>
-        </div>
-      </div>
+      <li key={stock.symbol}>
+        <p>Symbol: {stock.symbol}</p>
+        <p>Quantity: {stock.quantity}</p>
+        <p>Purchase Price: {stock.purchasePrice}</p>
+        <p>Current Price: {stock.currentPrice}</p>
+        <p>Profit/Loss: </p>
+      </li>
     </>
+  ));
+
+  return (
+    <section>
+      <h2 className="heading">Stock List</h2>
+      <div className="stock-list-container">
+        {stocks.length === 0 ? (
+          <p>No stocks added yet.</p>
+        ) : (
+          <ul className="stock-list-card">{stockListElements}</ul>
+        )}
+      </div>
+    </section>
   );
 }
