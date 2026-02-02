@@ -7,6 +7,17 @@ import StockContext from "./context/StockContext.jsx";
 function App() {
   // shared stock list state
   const [stocks, setStocks] = useState([]); // array of objects
+  /*
+  stocks = [
+    {
+      symbol: "",
+      quantity: "",
+      purchasePrice: "",
+      currentPrice: ""
+    },
+    {...},
+  ]
+  */
 
   function addStock(newStock) {
     setStocks((prevStockArray) => [...prevStockArray, newStock]);
