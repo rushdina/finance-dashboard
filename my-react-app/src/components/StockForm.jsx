@@ -15,7 +15,7 @@ export default function StockForm() {
     const { name, value } = event.target; // object destructure
     setFormInput((prevInput) => ({
       ...prevInput,
-      [name]: value, // formInput[event.target.name]: event.target.value
+      [name]: value, // [event.target.name]: event.target.value
     }));
   }
 
@@ -33,7 +33,7 @@ export default function StockForm() {
 
     addStock({
       symbol: formInput.symbol.toUpperCase(),
-      quantity: parseFloat(formInput.quantity),
+      quantity: parseInt(formInput.quantity),
       purchasePrice: parseFloat(formInput.purchasePrice),
     });
 
@@ -59,6 +59,8 @@ export default function StockForm() {
         <input
           type="number"
           name="quantity"
+          min="1" // prevent -ve values
+          step="1" // whole numbers only
           value={formInput.quantity}
           onChange={handleInputChange}
           placeholder="Quantity"
@@ -68,6 +70,8 @@ export default function StockForm() {
         <input
           type="number"
           name="purchasePrice"
+          min="0.01" // prevent - ve values
+          step="0.01" // 2 decimals for price
           value={formInput.purchasePrice}
           onChange={handleInputChange}
           placeholder="Purchase Price"
