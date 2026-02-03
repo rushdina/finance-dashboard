@@ -26,21 +26,16 @@ function App() {
   const fetchStockData = useCallback((symbol) => {
     const API_KEY = "GUMKPIWP8O8HWRR5";
     return fetch(
-      `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${API_KEY}`,
+      // `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${API_KEY}}`,
+      `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=IBM&apikey=demo`,
     )
       .then((res) => res.json())
       .then((data) => {
         console.log(data); // to check the API rate limit request per day
         // Validate symbol for StockForm: a valid symbol has a current price
-        if (!data["Global Quote"] || !data["Global Quote"]["05. price"]) {
-          return null; // resolves with null if symbol is invalid
-        } else {
-          console.log(data); // only logs if symbol is valid
-          // return {
-          //   currentPrice: parseFloat(data["Global Quote"]["05. price"]),
-          // };
-          // return resolves object of currentPrice (for StockList)
-        }
+        const price = data["Global Quote"]["05. price"];
+        // resolves with null if symbol is invalid, else resolves price
+        return price ? parseFloat(price) : null;
       })
       .catch((error) => {
         console.error(error);
