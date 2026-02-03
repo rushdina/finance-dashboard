@@ -3,8 +3,10 @@ import { useContext, useState } from "react";
 import StockContext from "../context/StockContext.jsx";
 
 export default function StockForm() {
+  // useContext: Access the stock list state from the StockContext in the necessary components.
   const { addStock, fetchStockData } = useContext(StockContext);
 
+  // useState: Manage the state of the stock form inputs.
   const [formInput, setFormInput] = useState({
     symbol: "",
     quantity: "",
@@ -12,7 +14,7 @@ export default function StockForm() {
   }); // object keys match form input "name" attributes
 
   function handleInputChange(event) {
-    const { name, value } = event.target; // object destructure
+    const { name, value } = event.target;
     setFormInput((prevInput) => ({
       ...prevInput,
       [name]: value, // [event.target.name]: event.target.value
@@ -27,7 +29,7 @@ export default function StockForm() {
     // Validate symbol
     // use .then because fetchStockData is asynchronous function returns a Promise
     fetchStockData(symbol).then((result) => {
-      // result is the return resolved object value
+      // result is the return resolved value
       if (!result) {
         alert(`Invalid Stock Symbol: ${symbol}`);
         return;
@@ -37,7 +39,7 @@ export default function StockForm() {
         symbol,
         quantity: parseInt(formInput.quantity),
         purchasePrice: parseFloat(formInput.purchasePrice),
-        currentPrice: result.currentPrice,
+        // currentPrice: result.currentPrice,
       });
 
       setFormInput({
