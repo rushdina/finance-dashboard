@@ -28,9 +28,9 @@ export default function StockForm() {
 
     // Validate symbol
     // use .then because fetchStockData is asynchronous function returns a Promise
-    fetchStockData(symbol).then((result) => {
-      // result is the return resolved value
-      if (!result) {
+    fetchStockData(symbol).then((price) => {
+      // price is the return resolved value
+      if (!price) {
         alert(`Invalid Stock Symbol: ${symbol}`);
         return;
       }
@@ -39,7 +39,6 @@ export default function StockForm() {
         symbol,
         quantity: parseInt(formInput.quantity),
         purchasePrice: parseFloat(formInput.purchasePrice),
-        // currentPrice: result.currentPrice,
       });
 
       setFormInput({
