@@ -3,6 +3,7 @@ import StockContext from "../context/StockContext";
 import { useContext } from "react";
 
 export default function StockList() {
+  // useContext: Access the stock list state from the StockContext in the necessary components.
   const { stocks } = useContext(StockContext);
 
   const stockListElements = stocks.map((stock) => {

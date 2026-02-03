@@ -5,9 +5,9 @@ import StockList from "./components/StockList.jsx";
 import StockContext from "./context/StockContext.jsx";
 
 function App() {
-  // shared stock list state
-  const [stocks, setStocks] = useState([]); // array of objects
-  console.log(stocks);
+  // useState: Manage the state of the stock list.
+  const [stocks, setStocks] = useState([]);
+  console.log("Added stock list:", stocks); // array of objects
   /*
   stocks = [
     {
@@ -20,26 +20,26 @@ function App() {
   ]
   */
 
-  // shared API data for StockForm and StockList
+  // useCallback: Memoize the function that fetches the stock data from the API to avoid unnecessary re-creations.
+  // Shared API data for StockForm and StockList
+  // Fetch current price if symbol is valid
   const fetchStockData = useCallback((symbol) => {
-    const API_KEY = "42ZEWT4IRU5YGZ8I";
+    const API_KEY = "GUMKPIWP8O8HWRR5";
     return fetch(
       `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${API_KEY}`,
     )
       .then((res) => res.json())
       .then((data) => {
-        // console.log(data);
-        // symbol validation for StockForm
-        // if have current price meaning the symbol is valid
+        console.log(data); // to check the API rate limit request per day
+        // Validate symbol for StockForm: a valid symbol has a current price
         if (!data["Global Quote"] || !data["Global Quote"]["05. price"]) {
-          return null; // resolves with null if symbol invalid
+          return null; // resolves with null if symbol is invalid
         } else {
           console.log(data); // only logs if symbol is valid
-          // resolves with valid object
-          return {
-            symbol,
-            currentPrice: parseFloat(data["Global Quote"]["05. price"]),
-          }; // return object of user input symbol and currentPrice (for StockList)
+          // return {
+          //   currentPrice: parseFloat(data["Global Quote"]["05. price"]),
+          // };
+          // return resolves object of currentPrice (for StockList)
         }
       })
       .catch((error) => {
@@ -48,6 +48,7 @@ function App() {
       });
   }, []);
 
+  // Add new stock to the stock list state
   function addStock(newStock) {
     setStocks((prevStockArray) => [...prevStockArray, newStock]);
   }
