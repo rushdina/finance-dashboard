@@ -26,8 +26,8 @@ function App() {
   const fetchStockData = useCallback((symbol) => {
     const API_KEY = "GUMKPIWP8O8HWRR5";
     return fetch(
-      // `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${API_KEY}}`,
-      `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=IBM&apikey=demo`,
+      `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${API_KEY}}`,
+      // `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=IBM&apikey=demo`,
     )
       .then((res) => res.json())
       .then((data) => {
@@ -53,7 +53,6 @@ function App() {
       value={{ stocks, setStocks, addStock, fetchStockData }}
     >
       <div className="app">
-        <h1 className="page-title heading">Finance Dashboard</h1>
         <StockForm />
         <StockList />
       </div>
