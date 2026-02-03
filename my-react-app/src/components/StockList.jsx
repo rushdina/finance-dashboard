@@ -9,6 +9,9 @@ export default function StockList() {
   // useEffect: Fetch the current stock prices from the API when the component mounts and whenever the stock list is updated.
   useEffect(() => {
     stocks.forEach((stock) => {
+      // only fetch if currentPrice: null
+      if (stock.currentPrice !== null) return;
+
       fetchStockData(stock.symbol).then((price) => {
         if (price) {
           setStocks((prevStockArray) =>

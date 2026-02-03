@@ -39,6 +39,7 @@ export default function StockForm() {
         symbol,
         quantity: parseInt(formInput.quantity),
         purchasePrice: parseFloat(formInput.purchasePrice),
+        currentPrice: null,
       });
 
       setFormInput({
