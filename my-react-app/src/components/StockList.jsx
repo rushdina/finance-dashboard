@@ -31,34 +31,41 @@ export default function StockList() {
         : null;
 
     return (
-      <li key={stock.symbol}>
-        <p>Symbol: {stock.symbol}</p>
+      <li key={stock.symbol} className="stocklist-card">
+        <p>
+          <b>Symbol:</b> {stock.symbol}
+        </p>
         <p>Quantity: {stock.quantity}</p>
         <p>Purchase Price: ${stock.purchasePrice}</p>
         {stock.currentPrice !== null ? (
           <>
             <p>Current Price: ${stock.currentPrice}</p>
-            <p style={{ color: profitLoss > 0 ? "green" : "red" }}>
-              Profit/Loss: {profitLoss > 0 ? "+" : "-"}${profitLoss.toFixed(2)}
+            <p
+              style={{ color: profitLoss > 0 ? "green" : "red" }}
+              className="profit-loss"
+            >
+              <strong>
+                Profit/Loss: {profitLoss > 0 ? "+" : "-"}$
+                {Math.abs(profitLoss.toFixed(2))}
+                {/* Math.abs to remove "-" */}
+              </strong>
             </p>
           </>
         ) : (
-          <p>Loading current price and profit/loss...</p>
+          <p className="profit-loss">Loading price...</p>
         )}
       </li>
     );
   });
 
   return (
-    <section>
-      <h2 className="heading">Stock List</h2>
-      <div className="stock-list">
-        {stocks.length === 0 ? (
-          <p>No stocks added yet.</p>
-        ) : (
-          <ul className="stock-list-card">{stockListElements}</ul>
-        )}
-      </div>
+    <section className="container">
+      <h2 className="stocklist-heading">Stock List</h2>
+      {stocks.length === 0 ? (
+        <p>No stocks added yet.</p>
+      ) : (
+        <ul className="stocklist-container">{stockListElements}</ul>
+      )}
     </section>
   );
 }

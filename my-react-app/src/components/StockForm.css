@@ -1,3 +1,7 @@
+.dashboard-heading {
+  margin-bottom: 30px;
+}
+
 .stock-form {
   display: flex;
   flex-direction: column;
@@ -24,6 +28,7 @@
 .add-stock-btn {
   background-color: #006e58;
   border: none;
+  color: #fff;
 }
 
 .add-stock-btn:hover {
