@@ -1,3 +1,4 @@
+import { nanoid } from "nanoid";
 import "./StockForm.css";
 import { useContext, useState } from "react";
 import StockContext from "../context/StockContext.jsx";
@@ -37,6 +38,7 @@ export default function StockForm() {
 
       // When symbol is valid, add price to stock list
       addStock({
+        id: nanoid(), // generate unique id for each symbol added
         symbol,
         quantity: parseInt(formInput.quantity),
         purchasePrice: parseFloat(formInput.purchasePrice),

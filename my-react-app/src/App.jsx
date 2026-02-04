@@ -26,16 +26,19 @@ function App() {
   const fetchStockData = useCallback((symbol) => {
     const API_KEY = "GUMKPIWP8O8HWRR5";
     return fetch(
-      `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${API_KEY}`,
-      // `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=IBM&apikey=demo`,
+      // `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${API_KEY}`,
+      `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=IBM&apikey=demo`,
     )
       .then((res) => res.json())
       .then((data) => {
         console.log(data); // to check the API rate limit request per day
         // Validate symbol for StockForm: a valid symbol has a current price
-        const price = data["Global Quote"]["05. price"];
-        // resolves with null if symbol is invalid, else resolves price
-        return price ? parseFloat(price) : null;
+        if (!data["Global Quote"] || !data["Global Quote"]["05. price"]) {
+          return null; // resolves with null if symbol is invalid
+        } else {
+          // else resolves with price
+          return parseFloat(data["Global Quote"]["05. price"]);
+        }
       })
       .catch((error) => {
         console.error(error);
@@ -48,9 +51,17 @@ function App() {
     setStocks((prevStockArray) => [...prevStockArray, newStock]);
   }
 
+  function updateSetStock(symbol, price) {
+    setStocks((prevStockArray) =>
+      prevStockArray.map((stock) =>
+        stock.symbol === symbol ? { ...stock, currentPrice: price } : stock,
+      ),
+    );
+  }
+
   return (
     <StockContext.Provider
-      value={{ stocks, setStocks, addStock, fetchStockData }}
+      value={{ stocks, addStock, fetchStockData, updateSetStock }}
     >
       <div className="app">
         <StockForm />
