@@ -26,7 +26,7 @@ function App() {
   const fetchStockData = useCallback((symbol) => {
     const API_KEY = "GUMKPIWP8O8HWRR5";
     return fetch(
-      `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${API_KEY}}`,
+      `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${API_KEY}`,
       // `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=IBM&apikey=demo`,
     )
       .then((res) => res.json())
