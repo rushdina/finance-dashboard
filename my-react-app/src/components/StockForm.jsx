@@ -54,7 +54,7 @@ export default function StockForm() {
   }
 
   return (
-    <section className="header">
+    <section className="header container">
       <h1 className="dashboard-heading">Finance Dashboard</h1>
       <form className="stock-form" onSubmit={handleSubmit}>
         <input
