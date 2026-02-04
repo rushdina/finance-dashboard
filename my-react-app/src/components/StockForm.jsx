@@ -35,11 +35,12 @@ export default function StockForm() {
         return;
       }
 
+      // When symbol is valid, add price to stock list
       addStock({
         symbol,
         quantity: parseInt(formInput.quantity),
         purchasePrice: parseFloat(formInput.purchasePrice),
-        currentPrice: null,
+        currentPrice: price,
       });
 
       setFormInput({

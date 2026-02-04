@@ -13,13 +13,12 @@ export default function StockList() {
       if (stock.currentPrice !== null) return;
 
       fetchStockData(stock.symbol).then((price) => {
-        if (price) {
-          setStocks((prevStockArray) =>
-            prevStockArray.map((s) =>
-              s.symbol === stock.symbol ? { ...s, currentPrice: price } : s,
-            ),
-          );
-        }
+        if (price === null) return;
+        setStocks((prevStockArray) =>
+          prevStockArray.map((s) =>
+            s.symbol === stock.symbol ? { ...s, currentPrice: price } : s,
+          ),
+        );
       });
     });
   }, [stocks, fetchStockData, setStocks]);
@@ -41,7 +40,10 @@ export default function StockList() {
           <>
             <p>Current Price: ${stock.currentPrice}</p>
             <p
-              style={{ color: profitLoss > 0 ? "green" : "red" }}
+              style={{
+                color:
+                  profitLoss > 0 ? "green" : profitLoss < 0 ? "red" : "gray",
+              }}
               className="profit-loss"
             >
               <strong>
