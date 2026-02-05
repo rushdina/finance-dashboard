@@ -20,14 +20,15 @@ function App() {
   ]
   */
 
+  const API_KEY = "GUMKPIWP8O8HWRR5";
+
   // useCallback: Memoize the function that fetches the stock data from the API to avoid unnecessary re-creations.
   // Shared API data for StockForm and StockList
   // Fetch current price if symbol is valid
   const fetchStockData = useCallback((symbol) => {
-    const API_KEY = "GUMKPIWP8O8HWRR5";
     return fetch(
-      // `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${API_KEY}`,
-      `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=IBM&apikey=demo`,
+      `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${API_KEY}`,
+      // `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=IBM&apikey=demo`,
     )
       .then((res) => res.json())
       .then((data) => {
@@ -51,17 +52,17 @@ function App() {
     setStocks((prevStockArray) => [...prevStockArray, newStock]);
   }
 
-  function updateSetStock(symbol, price) {
+  function updateStockPrice(id, price) {
     setStocks((prevStockArray) =>
       prevStockArray.map((stock) =>
-        stock.symbol === symbol ? { ...stock, currentPrice: price } : stock,
+        stock.id === id ? { ...stock, currentPrice: price } : stock,
       ),
     );
   }
 
   return (
     <StockContext.Provider
-      value={{ stocks, addStock, fetchStockData, updateSetStock }}
+      value={{ stocks, addStock, fetchStockData, updateStockPrice }}
     >
       <div className="app">
         <StockForm />

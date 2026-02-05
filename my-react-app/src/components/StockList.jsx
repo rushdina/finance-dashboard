@@ -4,7 +4,7 @@ import { useContext, useEffect } from "react";
 
 export default function StockList() {
   // useContext: Access the stock list state from the StockContext in the necessary components.
-  const { stocks, fetchStockData, updateSetStock } = useContext(StockContext);
+  const { stocks, fetchStockData, updateStockPrice } = useContext(StockContext);
 
   // useEffect: Fetch the current stock prices from the API when the component mounts and whenever the stock list is updated.
   useEffect(() => {
@@ -12,12 +12,12 @@ export default function StockList() {
       // only fetch if currentPrice: null
       if (stock.currentPrice !== null) return;
 
-      fetchStockData(stock.symbol).then((price) => {
+      fetchStockData(stock.id).then((price) => {
         if (price === null) return;
-        updateSetStock(stock.symbol, price);
+        updateStockPrice(stock.id, price);
       });
     });
-  }, [stocks, fetchStockData, updateSetStock]);
+  }, [stocks, fetchStockData, updateStockPrice]);
 
   const stockListElements = stocks.map((stock) => {
     const profitLoss =
