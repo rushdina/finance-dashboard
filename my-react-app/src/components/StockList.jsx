@@ -31,10 +31,10 @@ export default function StockList() {
           <b>Symbol:</b> {stock.symbol}
         </p>
         <p>Quantity: {stock.quantity}</p>
-        <p>Purchase Price: ${stock.purchasePrice}</p>
+        <p>Purchase Price: ${stock.purchasePrice.toFixed(2)}</p>
         {stock.currentPrice !== null ? (
           <>
-            <p>Current Price: ${stock.currentPrice}</p>
+            <p>Current Price: ${stock.currentPrice.toFixed(2)}</p>
             <p
               style={{
                 color:
@@ -44,7 +44,7 @@ export default function StockList() {
             >
               <strong>
                 Profit/Loss: {profitLoss > 0 ? "+" : "-"}$
-                {Math.abs(profitLoss.toFixed(2))}
+                {Math.abs(profitLoss).toFixed(2)}
                 {/* Math.abs to remove "-" */}
               </strong>
             </p>
@@ -60,7 +60,7 @@ export default function StockList() {
     <section className="container">
       <h2 className="stocklist-heading">Stock List</h2>
       {stocks.length === 0 ? (
-        <p>No stocks added yet.</p>
+        <p style={{ textAlign: "center" }}>No stocks added yet.</p>
       ) : (
         <ul className="stocklist-container">{stockListElements}</ul>
       )}
