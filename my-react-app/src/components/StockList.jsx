@@ -12,7 +12,7 @@ export default function StockList() {
       // only fetch if currentPrice: null
       if (stock.currentPrice !== null) return;
 
-      fetchStockData(stock.id).then((price) => {
+      fetchStockData(stock.symbol).then((price) => {
         if (price === null) return;
         updateStockPrice(stock.id, price);
       });
