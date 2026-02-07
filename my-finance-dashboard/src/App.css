@@ -1,0 +1,18 @@
+#root {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  padding-bottom: 1.5rem;
+  min-height: 100vh;
+}
+
+.container {
+  width: 80%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* to make a footer always stick to the bottom */
+main {
+  flex: 1;
+}
