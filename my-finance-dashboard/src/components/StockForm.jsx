@@ -76,6 +76,7 @@ export default function StockForm() {
             <input
               type="number"
               name="quantity"
+              id="quantity"
               min="1" // prevent -ve values
               step="1" // whole numbers only
               value={formInput.quantity}

@@ -27,24 +27,46 @@ function App() {
   // Fetch current price if symbol is valid
   const fetchStockData = useCallback(
     (symbol) => {
-      return fetch(
-        `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${API_KEY}`,
-        // `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=IBM&apikey=demo`,
-      )
+      const primaryUrl = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${API_KEY}`;
+      const demoUrl = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=IBM&apikey=demo`;
+
+      return fetch(primaryUrl)
         .then((res) => res.json())
         .then((data) => {
-          console.log(data); // to check the API rate limit request per day
-          // Validate symbol for StockForm: a valid symbol has a current price
-          if (!data["Global Quote"] || !data["Global Quote"]["05. price"]) {
-            return null; // resolves with null if symbol is invalid
+          console.log(data); // to check the API rate limit response
+
+          // if primaryURL API fail
+          if (data.Information || data.Note || !data["Global Quote"]) {
+            return fetch(demoUrl)
+              .then((res) => res.json())
+              .then((demoData) => {
+                // Validate symbol for StockForm: a valid symbol has a current price
+                if (
+                  demoData["Global Quote"] &&
+                  demoData["Global Quote"]["05. price"]
+                ) {
+                  console.log(demoData);
+                  return parseFloat(demoData["Global Quote"]["05. price"]); // resolves with price
+                } else {
+                  return null; // resolves with null if symbol is invalid
+                }
+              })
+              .catch((error) => {
+                console.error(error);
+                return null; // resolves with null if fetch fails
+              });
+          }
+
+          // if primaryURL API success
+          else if (data["Global Quote"] && data["Global Quote"]["05. price"]) {
+            return parseFloat(data["Global Quote"]["05. price"]); // valid symbol, return price
           } else {
-            // else resolves with price
-            return parseFloat(data["Global Quote"]["05. price"]);
+            return null; // invalid symbol, return null
           }
         })
         .catch((error) => {
           console.error(error);
-          return null; // resolves with null if fetch fails
+          return null;
         });
     },
     [API_KEY],
