@@ -73,10 +73,34 @@ function App() {
   );
 
   // Add new stock to the stock list state
-  function addStock(newStock) {
-    setStocks((prevStockArray) => [...prevStockArray, newStock]);
+  function addOrMergeStock(newStock) {
+    // setStocks((prevStockArray) => [...prevStockArray, newStock]);
+
+    setStocks((prevStockArray) => {
+      const existingStock = prevStockArray.find(
+        (stock) => stock.symbol === newStock.symbol,
+      ); // if true, return stock obj item
+
+      if (!existingStock) {
+        return [...prevStockArray, newStock]; // exit addStock function
+      }
+
+      const totalQty = existingStock.quantity + newStock.quantity;
+      const avgPurchasePrice =
+        (existingStock.purchasePrice * existingStock.quantity +
+          newStock.purchasePrice * newStock.quantity) /
+        totalQty;
+
+      return prevStockArray.map((stock) => {
+        return stock.symbol === newStock.symbol
+          ? // update stock obj if user added same stock symbol
+            { ...stock, quantity: totalQty, purchasePrice: avgPurchasePrice }
+          : stock;
+      });
+    });
   }
 
+  // update price in stock state
   function updateStockPrice(id, price) {
     setStocks((prevStockArray) =>
       prevStockArray.map((stock) =>
@@ -87,13 +111,13 @@ function App() {
 
   return (
     <StockContext.Provider
-      value={{ stocks, addStock, fetchStockData, updateStockPrice }}
+      value={{ stocks, addOrMergeStock, fetchStockData, updateStockPrice }}
     >
       <>
         <StockForm />
         <StockList />
         <footer style={{ textAlign: "center", fontSize: "0.875rem" }}>
-          &copy; 2026 MyFinanceDashboard
+          &copy; 2026 Finance Dashboard
         </footer>
       </>
     </StockContext.Provider>
