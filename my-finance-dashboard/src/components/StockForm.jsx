@@ -5,7 +5,7 @@ import StockContext from "../context/StockContext.jsx";
 
 export default function StockForm() {
   // useContext: Access the stock list state from the StockContext in the necessary components.
-  const { addStock, fetchStockData } = useContext(StockContext);
+  const { addOrMergeStock, fetchStockData } = useContext(StockContext);
 
   // useState: Manage the state of the stock form inputs.
   const [formInput, setFormInput] = useState({
@@ -37,7 +37,7 @@ export default function StockForm() {
       }
 
       // When symbol is valid, add price to stock list
-      addStock({
+      addOrMergeStock({
         id: nanoid(), // generate unique id for each symbol added
         symbol,
         quantity: parseInt(formInput.quantity),
