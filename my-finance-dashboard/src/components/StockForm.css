@@ -22,6 +22,19 @@
   gap: 1rem;
 }
 
+.stock-form > div {
+  width: 100%;
+}
+
+.stock-label-input {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-bottom: 0.5rem;
+}
+
 .form-input {
   border-radius: 4px;
   padding: 0.8rem 1rem;
@@ -55,11 +68,13 @@
   .dashboard-heading {
     font-size: 3rem; /* 3 * 16px = 48px */
   }
+
   .stock-form {
     flex-direction: row;
+    align-items: flex-end;
   }
 
-  .form-input {
+  .stock-form > div {
     width: 184px;
   }
 

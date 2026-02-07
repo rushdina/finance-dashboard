@@ -57,13 +57,13 @@ export default function StockList() {
   });
 
   return (
-    <section className="container">
+    <main className="container">
       <h2 className="stocklist-heading">Stock List</h2>
       {stocks.length === 0 ? (
         <p style={{ textAlign: "center" }}>No stocks added yet.</p>
       ) : (
         <ul className="stocklist-container">{stockListElements}</ul>
       )}
-    </section>
+    </main>
   );
 }

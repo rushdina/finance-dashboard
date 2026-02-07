@@ -54,46 +54,57 @@ export default function StockForm() {
   }
 
   return (
-    <section className="header">
+    <header className="header">
       <div className="container">
         <h1 className="dashboard-heading">Finance Dashboard</h1>
         <form className="stock-form" onSubmit={handleSubmit}>
-          <input
-            type="text"
-            name="symbol"
-            value={formInput.symbol}
-            onChange={handleInputChange}
-            placeholder="Stock Symbol"
-            className="form-input"
-            required
-          />
-          <input
-            type="number"
-            name="quantity"
-            min="1" // prevent -ve values
-            step="1" // whole numbers only
-            value={formInput.quantity}
-            onChange={handleInputChange}
-            placeholder="Quantity"
-            className="form-input"
-            required
-          />
-          <input
-            type="number"
-            name="purchasePrice"
-            min="0.01" // prevent - ve values
-            step="0.01" // 2 decimals for price
-            value={formInput.purchasePrice}
-            onChange={handleInputChange}
-            placeholder="Purchase Price"
-            className="form-input"
-            required
-          />
+          <div className="stock-label-input">
+            <label htmlFor="symbol">Stock Symbol:</label>
+            <input
+              type="text"
+              name="symbol"
+              id="symbol"
+              value={formInput.symbol}
+              onChange={handleInputChange}
+              placeholder="AAPL"
+              className="form-input"
+              required
+            />
+          </div>
+          <div className="stock-label-input">
+            <label htmlFor="quantity">Quantity:</label>
+            <input
+              type="number"
+              name="quantity"
+              min="1" // prevent -ve values
+              step="1" // whole numbers only
+              value={formInput.quantity}
+              onChange={handleInputChange}
+              placeholder="1"
+              className="form-input"
+              required
+            />
+          </div>
+          <div className="stock-label-input">
+            <label htmlFor="purchasePrice">Purchase Price:</label>
+            <input
+              type="number"
+              name="purchasePrice"
+              id="purchasePrice"
+              min="0.01" // prevent - ve values
+              step="0.01" // 2 decimals for price
+              value={formInput.purchasePrice}
+              onChange={handleInputChange}
+              placeholder="0.01"
+              className="form-input"
+              required
+            />
+          </div>
           <button type="submit" className="add-stock-btn">
             Add Stock
           </button>
         </form>
       </div>
-    </section>
+    </header>
   );
 }
