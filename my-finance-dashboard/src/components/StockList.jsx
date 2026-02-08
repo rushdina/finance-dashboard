@@ -14,7 +14,7 @@ export default function StockList() {
 
       fetchStockData(stock.symbol).then((price) => {
         if (price === null) return;
-        updateStockPrice(stock.id, price);
+        updateStockPrice(stock.symbol, price);
       });
     });
   }, [stocks, fetchStockData, updateStockPrice]);
