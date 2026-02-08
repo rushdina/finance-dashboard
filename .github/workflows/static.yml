@@ -1,0 +1,77 @@
+# Workflow for deploying a nested React Vite project static content to GitHub Pages
+name: Deploy React Vite static content to GitHub Pages
+
+# 1. Trigger: when this workflow runs
+on:
+  # Run automatically when code is pushed to the default main branch
+  push:
+    branches: ["main"]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# Sets the GITHUB_TOKEN permissions to allow deployment to GitHub Pages
+permissions:
+  contents: read # allow workflow to read repository content
+  pages: write # allow deployment to GitHub Pages
+  id-token: write # used for authentication if needed
+
+# Allow one concurrent deployment, prevent multiple deployments at the same time
+concurrency:
+  group: "pages" # group name for concurrency
+  cancel-in-progress: true # cancel previous workflow run if new run starts
+
+# 2. Job definition
+jobs:
+  # Single job for building and deploying
+  build-deploy: # job ID unique
+    # Environment metadata
+    environment:
+      name: github-pages # GitHub environment name
+      url: ${{ steps.deployment.outputs.page_url }} # output URL of deployed site
+
+    # Choose the runner OS
+    runs-on: ubuntu-latest # GitHub-hosted Linux runner
+
+    # 3. Steps: sequence of actions to run
+    steps:
+      # 3a. Step: checkout repository code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        # pulls your repo code into the virtual server
+
+      # 3b. Step: setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24" # current local version
+          cache: "npm" # speeds up builds by caching node_modules
+
+      # 3c. Step: install dependencies
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./my-finance-dashboard
+        # working-directory points to your nested project folder
+
+      # 3d. Step: build the project
+      - name: Build
+        run: npm run build
+        working-directory: ./my-finance-dashboard
+        # creates dist/ folder with production-ready static files
+
+      # 3e. Step: setup GitHub Pages environment
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+        # prepares GitHub Pages for artifact deployment
+
+      # 3f. Step: upload built site artifact
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "./my-finance-dashboard/dist" # Upload dist folder
+          # tells GitHub which files to deploy
+
+      # 3g. Step: deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
+        id: deployment # reference to output url
+        uses: actions/deploy-pages@v4
