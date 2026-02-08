@@ -46,6 +46,7 @@ jobs:
         with:
           node-version: "24" # current local version
           cache: "npm" # speeds up builds by caching node_modules
+          cache-dependency-path: "./my-finance-dashboard/package-lock.json"
 
       # 3c. Step: install dependencies
       - name: Install dependencies
