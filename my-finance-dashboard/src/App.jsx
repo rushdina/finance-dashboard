@@ -101,10 +101,10 @@ function App() {
   }
 
   // update price in stock state
-  function updateStockPrice(id, price) {
+  function updateStockPrice(symbol, price) {
     setStocks((prevStockArray) =>
       prevStockArray.map((stock) =>
-        stock.id === id ? { ...stock, currentPrice: price } : stock,
+        stock.symbol === symbol ? { ...stock, currentPrice: price } : stock,
       ),
     );
   }
