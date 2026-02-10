@@ -65,6 +65,21 @@ label {
   color: #d2f161;
 }
 
+.error-text {
+  color: #fff;
+  background-color: #d32f2f;
+  font-size: 0.85rem;
+  margin-top: 4px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  width: fit-content;
+}
+
+.input-error {
+  border: 2px solid #d32f2f;
+  background-color: #fdd;
+}
+
 @media (min-width: 780px) {
   .header {
     border-radius: 0 0 40px 40px;
@@ -76,7 +91,7 @@ label {
 
   .stock-form {
     flex-direction: row;
-    align-items: flex-end;
+    align-items: flex-start;
   }
 
   .stock-form > div {
@@ -84,6 +99,15 @@ label {
   }
 
   .add-stock-btn {
+    margin-top: 0;
     width: 130px;
+  }
+
+  .center-btn {
+    align-self: center;
+  }
+
+  .end-btn {
+    align-self: flex-end;
   }
 }

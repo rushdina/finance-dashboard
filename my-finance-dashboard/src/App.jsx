@@ -11,6 +11,7 @@ function App() {
   /*
   stocks = [
     {
+      id: "",
       symbol: "",
       quantity: "",
       purchasePrice: "",
@@ -35,7 +36,7 @@ function App() {
         // ?. is optional chaining operator, checks if data exists, then checks data["Global Quote"], then checks data["Global Quote"]["05. price"]
         // if at any point is null/undefined, returns undefined
         const priceString = data?.["Global Quote"]?.["05. price"];
-        const price = parseFloat(priceString); // parseFloat(undefined) = NaN
+        const price = parseFloat(priceString); // parseFloat(undefined || "") = NaN
         return isNaN(price) || price === 0 ? null : price; // return null for invalid symbol
       }
 
@@ -50,7 +51,7 @@ function App() {
               .then((res) => res.json())
               .then((demoData) => {
                 const price = validateSymbolAndGetPrice(demoData);
-                return price;
+                return price; // return resolved value
               })
               .catch((error) => {
                 console.error("Demo API fetch failed:", error);
@@ -61,7 +62,7 @@ function App() {
           // if primaryURL API success
           else {
             const price = validateSymbolAndGetPrice(data);
-            return price;
+            return price; // return resolved value
           }
         })
         .catch((error) => {
@@ -91,9 +92,10 @@ function App() {
           newStock.purchasePrice * newStock.quantity) /
         totalQty;
 
+      // .map loops through each array item, transform it, returns new array
       return prevStockArray.map((stock) => {
         return stock.symbol === newStock.symbol
-          ? // update stock obj if user added same stock symbol
+          ? // {...} creates new stock object, copying all properties and overriding values if user added same stock symbol
             { ...stock, quantity: totalQty, purchasePrice: avgPurchasePrice }
           : stock;
       });
@@ -116,9 +118,7 @@ function App() {
       <>
         <StockForm />
         <StockList />
-        <footer style={{ textAlign: "center", fontSize: "0.875rem" }}>
-          &copy; 2026 Finance Dashboard
-        </footer>
+        <footer>&copy; 2026 Finance Dashboard</footer>
       </>
     </StockContext.Provider>
   );

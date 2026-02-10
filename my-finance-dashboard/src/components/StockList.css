@@ -26,6 +26,10 @@
   transform: translateY(-4px);
 }
 
+.symbol {
+  font-weight: bold;
+}
+
 .profit-loss {
   border-top: 1px solid #ccc;
   margin-top: 10px;

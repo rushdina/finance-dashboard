@@ -7,12 +7,14 @@ export default function StockForm() {
   // useContext: Access the stock list state from the StockContext in the necessary components.
   const { addOrMergeStock, fetchStockData } = useContext(StockContext);
 
+  // Local states
   // useState: Manage the state of the stock form inputs.
   const [formInput, setFormInput] = useState({
     symbol: "",
     quantity: "",
     purchasePrice: "",
   }); // object keys match form input "name" attributes
+  const [error, setError] = useState("");
 
   function handleInputChange(event) {
     const { name, value } = event.target;
@@ -32,7 +34,7 @@ export default function StockForm() {
     fetchStockData(symbol).then((price) => {
       // price is the return resolved value
       if (price === null) {
-        alert(`Invalid Stock Symbol: ${symbol}`);
+        setError(`Invalid Stock Symbol: ${symbol}`);
         return;
       }
 
@@ -45,6 +47,8 @@ export default function StockForm() {
         currentPrice: price,
       });
 
+      // Clear form and error on success
+      setError("");
       setFormInput({
         symbol: "",
         quantity: "",
@@ -67,9 +71,10 @@ export default function StockForm() {
               value={formInput.symbol}
               onChange={handleInputChange}
               placeholder="AAPL"
-              className="form-input"
+              className={`form-input ${error ? "input-error" : ""}`}
               required
             />
+            {error && <p className="error-text">{error}</p>}
           </div>
           <div className="stock-label-input">
             <label htmlFor="quantity">Quantity:</label>
@@ -101,7 +106,10 @@ export default function StockForm() {
               required
             />
           </div>
-          <button type="submit" className="add-stock-btn">
+          <button
+            type="submit"
+            className={`add-stock-btn ${error ? "center-btn" : "end-btn"}`}
+          >
             Add Stock
           </button>
         </form>
