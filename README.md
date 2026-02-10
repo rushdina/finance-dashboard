@@ -25,8 +25,8 @@ A React-based Finance Dashboard that allows users to track their stocks. Users c
 1. **Clone the repository**
 
 ```bash
-git clone https://github.com/yourusername/finance-dashboard.git
-cd finance-dashboard
+git clone https://github.com/yourusername/my-finance-dashboard.git
+cd my-finance-dashboard
 ```
 
 2. **Install dependencies**
