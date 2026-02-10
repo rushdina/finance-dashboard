@@ -71,7 +71,7 @@ npm run dev
 - **Duplicate API Calls Between Components**: `StockForm` and `StockList` both shared the same API, resulting in duplicate fetch calls when a stock was added.
   - Solution: Centralized API fetch function in the parent component and shared it via `Context` to ensure the data is fetched only once and reused, avoiding duplicate requests.
 - **Invalid Stock Symbols**: Needed to prevent adding invalid symbols to the list.
-  - Solution: Used optional chaining (`?.`) and `isNaN()` to validate the API response, returning `null` for invalid symbols and showing an error message.
+  - Solution: Used optional chaining (`?.`) to safely access nested API data, and `isNaN()` to verify the price. Return `null` and show an error message for invalid symbols.
 - **Duplicate Stocks**: Users could add the same stock multiple times.
   - Solution: Checked if the stock already exists using `.find()`. If it does, updated the quantity and calculated the average purchase price using `.map()` and the spread operator (`...`). Otherwise, added it as a new stock.
 - **Unnecessary API Calls During Price Fetching**: Updating stock prices triggers state changes, causing `useEffect` to run again and potentially make repeated API calls.
