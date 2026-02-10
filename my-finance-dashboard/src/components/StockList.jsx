@@ -19,11 +19,13 @@ export default function StockList() {
     });
   }, [stocks, fetchStockData, updateStockPrice]);
 
+  function calculateProfitLoss(stock) {
+    if (stock.currentPrice === null) return null;
+    return (stock.currentPrice - stock.purchasePrice) * stock.quantity;
+  }
+
   const stockListElements = stocks.map((stock) => {
-    const profitLoss =
-      stock.currentPrice !== null
-        ? (stock.currentPrice - stock.purchasePrice) * stock.quantity
-        : null;
+    const profitLoss = calculateProfitLoss(stock);
 
     return (
       <li key={stock.id} className="stocklist-card">
@@ -41,7 +43,7 @@ export default function StockList() {
               className="profit-loss"
             >
               <strong>
-                Profit/Loss: {profitLoss > 0 ? "+" : "-"}$
+                Profit/Loss: {profitLoss > 0 ? "+" : profitLoss < 0 ? "-" : ""}$
                 {Math.abs(profitLoss).toFixed(2)}
                 {/* Math.abs to remove "-" */}
               </strong>

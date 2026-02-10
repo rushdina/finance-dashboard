@@ -162,27 +162,62 @@ describe("StockList component", () => {
     expect(updateStockPriceMock).toHaveBeenCalledWith("AAPL", 50); // called with resolved price value
   });
 
-  // Test 6: Correct profit/loss math calculation
-  it("calculates profit/loss correctly using (currentPrice - purchasePrice) * quantity", () => {
-    const stock = {
+  // Test 6: Correct profit math calculation
+  it("displays profit correctly with + sign", () => {
+    const profitStock = {
       id: "1",
+      symbol: "AAPL",
+      quantity: 2,
+      purchasePrice: 10,
+      currentPrice: 12,
+    };
+
+    /**
+     * Profit/Loss = (currentPrice - purchasePrice) * quantity
+     * = (12 - 10) * 2 = +4
+     */
+
+    render(<TestStockProvider initialStocks={[profitStock]} />);
+
+    // (12 - 10) * 2 = +4
+    expect(screen.getByText(/Profit\/Loss:/i)).toHaveTextContent(
+      "Profit/Loss: +$4.00",
+    );
+  });
+
+  // Test 7: Correct loss math calculation
+  it("displays loss correctly with - sign", () => {
+    const lossStock = {
+      id: "2",
       symbol: "IBM",
       quantity: 2,
       purchasePrice: 50,
       currentPrice: 20,
     };
+    render(<TestStockProvider initialStocks={[lossStock]} />);
 
-    /**
-     * Profit/Loss = (currentPrice - purchasePrice) * quantity
-     * = (20 - 50) * 2 = -60
-     */
-
-    // StockList renders <li> for the stock
-    render(<TestStockProvider initialStocks={[stock]} />);
-
-    // (25 - 10) * 4 = 60
+    // (20 - 50) * 2 = -60
     expect(screen.getByText(/Profit\/Loss:/i)).toHaveTextContent(
       "Profit/Loss: -$60.00",
-    ); // + for positive, - for negative
+    );
+  });
+
+  // Test 8: Zero profit/loss edge case
+  it("displays zero profit/loss correctly with no sign", () => {
+    const zeroStock = {
+      id: "3",
+      symbol: "MSFT",
+      quantity: 5,
+      purchasePrice: 50,
+      currentPrice: 50, // same as purchasePrice, profit/loss = 0
+    };
+
+    render(<TestStockProvider initialStocks={[zeroStock]} />);
+
+    // Profit/Loss = (50 - 50) * 5 = 0
+    const profitLossElement = screen.getByText(/Profit\/Loss:/i);
+
+    // Check displayed text, text should have no + or -
+    expect(profitLossElement).toHaveTextContent("Profit/Loss: $0.00");
   });
 });
