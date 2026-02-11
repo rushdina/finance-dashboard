@@ -36,7 +36,7 @@ npm install
 ```
 
 3. **Set up environment variables**
-Create a .env file in the root folder and add your Alpha Vantage API key:
+- Create a .env file in the root folder and add your Alpha Vantage API key:
 
 ```bash
 VITE_ALPHA_KEY=your_alpha_vantage_api_key
