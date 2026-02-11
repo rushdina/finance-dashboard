@@ -36,7 +36,7 @@ npm install
 ```
 
 3. **Set up environment variables**
-   Create a .env file in the root folder and add your Alpha Vantage API key:
+Create a .env file in the root folder and add your Alpha Vantage API key:
 
 ```bash
 VITE_ALPHA_KEY=your_alpha_vantage_api_key
@@ -59,7 +59,7 @@ npm run dev
 3. The stock will appear in the list below with:
 
 - Current price (fetched from API)
-- Profit/Loss (color-coded)
+- Profit/Loss (colour-coded)
 
 4. Duplicate stock symbols will merge automatically, adjusting quantity and average purchase price.
 5. Invalid stock symbols will display an error and will not be added.
