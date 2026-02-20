@@ -6,11 +6,13 @@ import react from "@vitejs/plugin-react";
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react()],
-  base: "/NurulRushdinaBinteRosli-Capstone/", // for GitHub Pages
+  // Exports the Vite configuration so Vite knows how to run dev, build, and test
+  plugins: [react()], // Registers the React plugin. without this, React + JSX will not work
+  base: "/NurulRushdinaBinteRosli-Capstone/", // base URL path for GitHub Pages
   test: {
-    environment: "jsdom", // simulate browser
-    globals: true, // allow `describe`, `it`, `expect` without import
-    setupFiles: "./src/setupTests.js", // run before tests
+    // Vitest configuration block
+    environment: "jsdom", // simulate browser env for testing react components
+    globals: true, // allow `describe`, `it`, `expect` without import in test files
+    setupFiles: "./setupTests.js", // run before tests
   },
 });
