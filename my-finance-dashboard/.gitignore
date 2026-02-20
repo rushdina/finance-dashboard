@@ -13,7 +13,6 @@ dist
 dist-ssr
 .env
 *.local
-coverage/
 
 
 # Editor directories and files

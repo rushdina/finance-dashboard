@@ -52,16 +52,7 @@ jobs:
         run: npm run lint # Lint the codebase for syntax/quality issues
 
       - name: Run Tests (CI mode with coverage)
-        run: npm run test:ci # Run Vitest in headless CI mode and generate coverage
-
-      - name: Upload Coverage Report
-        if: always() # Run even if previous steps failed
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage-report
-          path: "./my-finance-dashboard/coverage"
-        # Uploads coverage folder as artifact to GitHub Actions
-        # Not pushed to repo; only downloadable from Actions UI
+        run: npm run test:ci # Run Vitest
 
   # 2nd BUILD & DEPLOY JOB
   build-deploy: # job ID unique
