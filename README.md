@@ -91,15 +91,14 @@ npm run dev
 
 - **Enhanced User Experience**:
   - Inline validation with visual error feedback
-  - Loading message indicators during API fetches
-  - Responsive UI design with **Flexbox** and **CSS Grid**
+  - Loading indicators during API fetches
+  - Responsive interface for various screen sizes
 - **Improved State Logic**:
-  - Duplicate stocks merge automatically instead of creating multiple entries
-  - Computes updated quantity and average purchase price for merged stocks
+  - Automatically merges duplicate stocks, updating quantity and recalculating average purchase price
   - Stable React rendering using `nanoid` for unique keys
 - **Performance Considerations**
   - Memoized API functions with `useCallback`
-  - Conditional state updates to minimize unnecessary re-renders
+  - Conditional state updates to prevent unnecessary re-renders
  
   ## 💡 Future Improvements
 
