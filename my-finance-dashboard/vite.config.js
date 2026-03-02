@@ -8,7 +8,7 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   // Exports the Vite configuration so Vite knows how to run dev, build, and test
   plugins: [react()], // Registers the React plugin. without this, React + JSX will not work
-  base: "/NurulRushdinaBinteRosli-Capstone/", // base URL path for GitHub Pages
+  base: "/finance-dashboard/", // base URL path for GitHub Pages
   test: {
     // Vitest configuration block
     environment: "jsdom", // simulate browser env for testing react components
