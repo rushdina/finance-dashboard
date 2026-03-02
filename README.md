@@ -93,5 +93,5 @@ npm run dev
   - Memoized API functions with `useCallback`
   - Conditional state updates to prevent unnecessary re-renders
  
-  ## 💡 Future Improvements
+## 💡 Future Improvements
 - Manual refresh for stock market price updates
