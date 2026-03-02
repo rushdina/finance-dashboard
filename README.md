@@ -4,7 +4,7 @@ A React-based Finance Dashboard that allows users to track their stocks purchase
 
 ## 🖼️ Preview
 
-🔗 Live Demo: https://rushdina.github.io/NurulRushdinaBinteRosli-Capstone/
+🔗 Live Demo: https://rushdina.github.io/finance-dashboard/
 
 ![Finance Dashboard Preview](./my-finance-dashboard/src/assets/screenshot-financeDashboard.png)
 
@@ -23,12 +23,12 @@ A React-based Finance Dashboard that allows users to track their stocks purchase
 ## ✨ Features
 
 - Add stocks (symbol, quantity, purchase price)
-- Validate symbols using **Alpha Vantage API**
+- Validate symbols using `Alpha Vantage API`
 - Fetch and display current stock prices
 - Compute and display color-coded profit/loss
 - Merge duplicate stocks with recalculated average purchase price
 - Handle API errors and loading states 
-- Responsive UI using Flexbox and CSS Grid
+- Responsive UI using `Flexbox` and `CSS Grid`
 
 ## 💻 Installation & Running Locally
 
