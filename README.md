@@ -1,15 +1,13 @@
 # 💹 Finance Dashboard
 
-A React-based Finance Dashboard that allows users to track their stocks purchased. Users can add stocks with quantity and purchase price, fetch the latest stock market prices using the **Alpha Vantage API**, and view real-time profit or loss for each stock.
+A React-based Finance Dashboard that allows users to track their stocks purchased. Users can add stocks with quantity and purchase price, fetch the latest stock market prices using the `Alpha Vantage API`, and view real-time profit or loss for each stock.
 
 ## 🖼️ Preview
-
 🔗 Live Demo: https://rushdina.github.io/finance-dashboard/
 
 ![Finance Dashboard Preview](./my-finance-dashboard/src/assets/screenshot-financeDashboard.png)
 
 ## 🛠️ Technologies Used
-
 - **Frontend:** `React`, `JavaScript`, `CSS`
 - **State Management:** `Context API` – Centralized global stock state and shared logic
 - React Hooks:
@@ -21,7 +19,6 @@ A React-based Finance Dashboard that allows users to track their stocks purchase
 - **npm Packages:** `nanoid` – Generates unique IDs for stable React keys
 
 ## ✨ Features
-
 - Add stocks (symbol, quantity, purchase price)
 - Validate symbols using `Alpha Vantage API`
 - Fetch and display current stock prices
@@ -31,7 +28,6 @@ A React-based Finance Dashboard that allows users to track their stocks purchase
 - Responsive UI using `Flexbox` and `CSS Grid`
 
 ## 💻 Installation & Running Locally
-
 1. **Clone the repository**
 
 ```bash
@@ -63,7 +59,6 @@ npm run dev
 5. Open the **Localhost URL** (`http://localhost:5173`) shown in your terminal in your browser.
 
 ## 🚀 Usage
-
 1. Enter a **stock symbol**, **quantity**, and **purchase price**.
 2. Click **Add Stock**.
 3. The stock appears in the list with:
@@ -72,8 +67,7 @@ npm run dev
 4. Duplicate symbols automatically merge and update quantity and average purchase price.
 5. Invalid symbols display inline error feedback and are not added.
 
-## 🧠 Challenges & Technical Decisions
-
+## 🧠 Challenges Encountered
 - **API Rate Limits**: Alpha Vantage free-tier allows only 25 requests/day.
   - Solution: Added a fallback demo stock (IBM) to maintain functionality, though prices may not reflect user input.
 - **Duplicate API Calls**: `StockForm` and `StockList` both triggered fetches when adding stocks.
@@ -88,7 +82,6 @@ npm run dev
   - Solution: Created a mock `Context` provider and recreated logic functions in a test wrapper to test logic in isolation.
 
 ## ✨ Improvements Beyond Baseline Requirements
-
 - **Enhanced User Experience**:
   - Inline validation with visual error feedback
   - Loading indicators during API fetches
@@ -101,6 +94,4 @@ npm run dev
   - Conditional state updates to prevent unnecessary re-renders
  
   ## 💡 Future Improvements
-
 - Manual refresh for stock market price updates
-
