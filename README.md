@@ -98,6 +98,13 @@ Additional behaviour:
   - Memoized API functions with `useCallback`
   - Conditional state updates to avoid unnecessary re-renders
  
+## 📚 What I Learned
+- React state management using `Context API` and Hooks
+- API integration and asynchronous data handling
+- Error handling for API limits, network issues, and invalid inputs
+- Immutable state updates for merging and updating stock data
+- Unit testing with `Vitest` and `React Testing Library`
+ 
 ## 💡 Future Improvements
 - Manual refresh button to update stock prices
 - Persistent storage using localStorage or a backend database
