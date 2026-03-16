@@ -1,6 +1,9 @@
 # Workflow for deploying a nested React Vite project static content to GitHub Pages
 name: CI/CD React Vite to GitHub Pages
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 # 1. Trigger: when workflow runs
 on:
   push:
