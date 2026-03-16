@@ -65,6 +65,7 @@ Open the localhost URL shown in your terminal (usually `http://localhost:5173`).
 3. The stock appears in the list with:
   - Current market price (fetched from API)
   - Calculated profit/Loss (color-coded)
+
 Additional behaviour:
 - Duplicate symbols automatically merge and recalculate average purchase price.
 - Invalid stock symbols show inline validation errors.
