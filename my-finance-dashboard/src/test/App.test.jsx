@@ -45,7 +45,7 @@ function StockProviderWrapper({ callback }) {
   };
 
   const fetchStockData = async () => {
-    return null; // mock fetch
+    return { price: 100 }; // mock fetch
   };
 
   return (

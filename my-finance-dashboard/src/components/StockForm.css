@@ -75,6 +75,11 @@ label {
   width: fit-content;
 }
 
+.api-error-text {
+  display: block;
+  margin: auto;
+}
+
 .input-error {
   border: 2px solid #d32f2f;
   background-color: #fdd;

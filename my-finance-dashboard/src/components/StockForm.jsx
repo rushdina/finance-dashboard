@@ -14,7 +14,10 @@ export default function StockForm() {
     quantity: "",
     purchasePrice: "",
   }); // object keys match form input "name" attributes
-  const [error, setError] = useState("");
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [symbolError, setSymbolError] = useState("");
+  const [apiError, setApiError] = useState("");
 
   function handleInputChange(event) {
     const { name, value } = event.target;
@@ -22,19 +25,41 @@ export default function StockForm() {
       ...prevInput,
       [name]: value, // [event.target.name]: event.target.value
     }));
+
+    setSymbolError("");
+    setApiError("");
   }
 
   function handleSubmit(event) {
     event.preventDefault();
 
     const symbol = formInput.symbol.trim().toUpperCase();
+    setIsSubmitting(true);
 
     // Validate symbol
     // use .then because fetchStockData is asynchronous function returns a Promise
-    fetchStockData(symbol).then((price) => {
-      // price is the return resolved value
-      if (price === null) {
-        setError(`Invalid Stock Symbol: ${symbol}`);
+    fetchStockData(symbol).then((result) => {
+      // result is the resolved object returned from fetchStockData
+      if (result.error === "rate-limit") {
+        setApiError(
+          "Too many requests. Please wait a few seconds and try again.",
+        );
+        setIsSubmitting(false);
+        setSymbolError("");
+        return;
+      }
+
+      if (result.error === "invalid-symbol") {
+        setSymbolError(`Invalid Stock Symbol: ${symbol}`);
+        setIsSubmitting(false);
+        setApiError("");
+        return;
+      }
+
+      if (result.error === "network") {
+        setApiError("Network error. Please try again.");
+        setIsSubmitting(false);
+        setSymbolError("");
         return;
       }
 
@@ -44,16 +69,19 @@ export default function StockForm() {
         symbol,
         quantity: parseInt(formInput.quantity),
         purchasePrice: parseFloat(formInput.purchasePrice),
-        currentPrice: price,
+        currentPrice: result.price,
       });
 
       // Clear form and error on success
-      setError("");
       setFormInput({
         symbol: "",
         quantity: "",
         purchasePrice: "",
       });
+
+      setSymbolError("");
+      setApiError("");
+      setIsSubmitting(false);
     });
   }
 
@@ -71,10 +99,14 @@ export default function StockForm() {
               value={formInput.symbol}
               onChange={handleInputChange}
               placeholder="AAPL"
-              className={`form-input ${error ? "input-error" : ""}`}
+              className={`form-input ${symbolError ? "input-error" : ""}`}
               required
             />
-            {error && <p className="error-text">{error}</p>}
+            {symbolError && (
+              <p className="error-text" aria-live="polite">
+                {symbolError}
+              </p>
+            )}
           </div>
           <div className="stock-label-input">
             <label htmlFor="quantity">Quantity:</label>
@@ -108,11 +140,21 @@ export default function StockForm() {
           </div>
           <button
             type="submit"
-            className={`add-stock-btn ${error ? "center-btn" : "end-btn"}`}
+            disabled={isSubmitting}
+            className={`add-stock-btn ${symbolError ? "center-btn" : "end-btn"}`}
           >
-            Add Stock
+            {isSubmitting ? "Adding..." : "Add Stock"}
           </button>
         </form>
+        {apiError && (
+          <p
+            className="error-text api-error-text"
+            aria-live="polite"
+            style={{ textAlign: "center", marginTop: "10px" }}
+          >
+            {apiError}
+          </p>
+        )}
       </div>
     </header>
   );

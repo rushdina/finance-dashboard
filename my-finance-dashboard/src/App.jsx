@@ -27,9 +27,8 @@ function App() {
   // Shared API data for StockForm and StockList
   // Fetch current price if symbol is valid
   const fetchStockData = useCallback(
-    (symbol) => {
+    async (symbol) => {
       const primaryUrl = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${API_KEY}`;
-      const demoUrl = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=IBM&apikey=demo`;
 
       // Validate symbol to get current price
       function validateSymbolAndGetPrice(data) {
@@ -40,35 +39,33 @@ function App() {
         return isNaN(price) || price === 0 ? null : price; // return null for invalid symbol
       }
 
-      return fetch(primaryUrl)
-        .then((res) => res.json())
-        .then((data) => {
-          console.log(data); // to check the API rate limit response
+      try {
+        const res = await fetch(primaryUrl);
+        const data = await res.json();
 
-          // if primaryURL API fail (rate limit)
-          if (data.Information || data.Note || !data["Global Quote"]) {
-            return fetch(demoUrl)
-              .then((res) => res.json())
-              .then((demoData) => {
-                const price = validateSymbolAndGetPrice(demoData);
-                return price; // return resolved value
-              })
-              .catch((error) => {
-                console.error("Demo API fetch failed:", error);
-                return null; // resolves with null if fetch fails
-              });
-          }
+        console.log(data); // to check the API rate limit response
 
-          // if primaryURL API success
-          else {
-            const price = validateSymbolAndGetPrice(data);
-            return price; // return resolved value
-          }
-        })
-        .catch((error) => {
-          console.error("Primary API fetch failed:", error);
-          return null;
-        });
+        // Rate limit or API message
+        if (data.Information || data.Note) {
+          return { error: "rate-limit" };
+        }
+
+        // Invalid symbol / no quote
+        if (!data["Global Quote"]) {
+          return { error: "invalid-symbol" };
+        }
+
+        const price = validateSymbolAndGetPrice(data);
+
+        if (price === null) {
+          return { error: "invalid-symbol" };
+        }
+
+        return { price }; // return resolved value
+      } catch (error) {
+        console.error("API fetch failed:", error);
+        return { error: "network" };
+      }
     },
     [API_KEY],
   );

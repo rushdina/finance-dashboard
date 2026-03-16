@@ -4,7 +4,7 @@ export default function StockItem({ stock, calculateProfitLoss }) {
   const profitLoss = calculateProfitLoss(stock);
 
   return (
-    <li key={stock.id} className="stocklist-card">
+    <li className="stocklist-card">
       <p className="symbol">Symbol: {stock.symbol}</p>
       <p>Quantity: {stock.quantity}</p>
       <p>Purchase Price: ${stock.purchasePrice.toFixed(2)}</p>

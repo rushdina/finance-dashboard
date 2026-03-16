@@ -12,7 +12,8 @@ function TestStockProvider({
 }) {
   const [stocks, setStocks] = useState(initialStocks);
 
-  const fetchStockData = fetchStockDataMock || vi.fn(async () => null); // mock passed from test, else default mock function
+  const fetchStockData =
+    fetchStockDataMock || vi.fn(async () => ({ price: 50 })); // mock passed from test, else default mock function
   const updateStockPrice =
     updateStockPriceMock ||
     vi.fn((symbol, price) => {
@@ -78,7 +79,7 @@ describe("StockList component", () => {
   // Test 3: useEffect calls fetchStockData to fetche missing prices on mount for null price
   it("calls fetchStockData only for stocks with currentPrice null", async () => {
     // mock function that tracks how many times it was called, with what arguments
-    const fetchStockDataMock = vi.fn(async () => 50);
+    const fetchStockDataMock = vi.fn(async () => ({ price: 50 }));
     const updateStockPriceMock = vi.fn();
 
     const stocks = [
@@ -116,5 +117,34 @@ describe("StockList component", () => {
     // And updateStockPrice should be called with resolved price
     expect(updateStockPriceMock).toHaveBeenCalledTimes(1);
     expect(updateStockPriceMock).toHaveBeenCalledWith("AAPL", 50); // called with resolved price value
+  });
+
+  // Test 4: Test handling: if (result.error) return;
+  it("does not call updateStockPrice when fetchStockData returns an error", async () => {
+    const fetchStockDataMock = vi.fn(async () => ({ error: "network" }));
+    const updateStockPriceMock = vi.fn();
+
+    const stocks = [
+      {
+        id: "1",
+        symbol: "AAPL",
+        quantity: 2,
+        purchasePrice: 10,
+        currentPrice: null,
+      },
+    ];
+
+    await act(async () => {
+      render(
+        <TestStockProvider
+          initialStocks={stocks}
+          fetchStockDataMock={fetchStockDataMock}
+          updateStockPriceMock={updateStockPriceMock}
+        />,
+      );
+    });
+
+    expect(fetchStockDataMock).toHaveBeenCalledWith("AAPL");
+    expect(updateStockPriceMock).not.toHaveBeenCalled();
   });
 });

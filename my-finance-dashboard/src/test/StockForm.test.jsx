@@ -7,11 +7,11 @@ import StockContext from "../context/StockContext.jsx";
 
 // Helper component to access mocked context
 function TestStockProvider({ addOrMergeStockMock, fetchStockDataMock }) {
-  const [setStocks] = useState([]);
+  const [, setStocks] = useState([]);
 
   const addOrMergeStock =
     addOrMergeStockMock || ((stock) => setStocks((prev) => [...prev, stock])); // use mock fn if exist, else use default fn updating stock
-  const fetchStockData = fetchStockDataMock || (async () => 100); // use mock fn if exist, else use default fn returning 100
+  const fetchStockData = fetchStockDataMock || (async () => ({ price: 100 })); // use mock fn if exist, else use default fn returning 100
 
   return (
     <StockContext.Provider value={{ addOrMergeStock, fetchStockData }}>
@@ -69,7 +69,7 @@ describe("StockForm component", () => {
   it("submits valid stock and resets form", async () => {
     // mock functions, vi = vitest mocking API
     const addOrMergeStockMock = vi.fn(); // vi.fn creates fake fn to test if the fn was called or with what arguments
-    const fetchStockDataMock = vi.fn(async () => 100); // mock returns price
+    const fetchStockDataMock = vi.fn(async () => ({ price: 100 })); // mock returns price
 
     render(
       <TestStockProvider
@@ -119,7 +119,9 @@ describe("StockForm component", () => {
   it("shows error message on invalid stock symbol", async () => {
     // mock functions
     const addOrMergeStockMock = vi.fn();
-    const fetchStockDataMock = vi.fn(async () => null); // returns null for invalid symbol
+    const fetchStockDataMock = vi.fn(async () => ({
+      error: "invalid-symbol",
+    })); // returns error for invalid symbol
 
     render(
       <TestStockProvider
@@ -155,7 +157,7 @@ describe("StockForm component", () => {
   // Test 5: Merging duplicate stocks
   it("merges duplicate stocks when submitting same symbol twice", async () => {
     const addOrMergeStockMock = vi.fn();
-    const fetchStockDataMock = vi.fn(async () => 50); // simulates api, return price 50
+    const fetchStockDataMock = vi.fn(async () => ({ price: 50 })); // simulates api, return price 50
 
     render(
       <TestStockProvider
@@ -208,7 +210,7 @@ describe("StockForm component", () => {
   // Test 6: Form prevents invalid values and edge cases
   it("prevents submitting invalid values (negative, zero, decimals, letters, empty)", async () => {
     const addOrMergeStockMock = vi.fn();
-    const fetchStockDataMock = vi.fn(async () => 100);
+    const fetchStockDataMock = vi.fn(async () => ({ price: 100 }));
 
     render(
       <TestStockProvider
@@ -290,5 +292,75 @@ describe("StockForm component", () => {
 
     // Assert: stock not added because all inputs are required to be filled
     expect(addOrMergeStockMock).not.toHaveBeenCalled();
+  });
+
+  // Test 7: Test rate-limit error
+  it("shows API error message on rate limit", async () => {
+    const addOrMergeStockMock = vi.fn();
+    const fetchStockDataMock = vi.fn(async () => ({
+      error: "rate-limit",
+    }));
+
+    render(
+      <TestStockProvider
+        addOrMergeStockMock={addOrMergeStockMock}
+        fetchStockDataMock={fetchStockDataMock}
+      />,
+    );
+
+    fireEvent.change(screen.getByLabelText(/Stock Symbol/i), {
+      target: { value: "AAPL" },
+    });
+    fireEvent.change(screen.getByLabelText(/Quantity/i), {
+      target: { value: "2" },
+    });
+    fireEvent.change(screen.getByLabelText(/Purchase Price/i), {
+      target: { value: "10" },
+    });
+
+    await act(async () => {
+      fireEvent.click(screen.getByRole("button", { name: /Add Stock/i }));
+    });
+
+    expect(addOrMergeStockMock).not.toHaveBeenCalled();
+    expect(
+      screen.getByText(
+        /Too many requests. Please wait a few seconds and try again./i,
+      ),
+    ).toBeInTheDocument();
+  });
+
+  // Test 8: Test network error
+  it("shows API error message on network error", async () => {
+    const addOrMergeStockMock = vi.fn();
+    const fetchStockDataMock = vi.fn(async () => ({
+      error: "network",
+    }));
+
+    render(
+      <TestStockProvider
+        addOrMergeStockMock={addOrMergeStockMock}
+        fetchStockDataMock={fetchStockDataMock}
+      />,
+    );
+
+    fireEvent.change(screen.getByLabelText(/Stock Symbol/i), {
+      target: { value: "AAPL" },
+    });
+    fireEvent.change(screen.getByLabelText(/Quantity/i), {
+      target: { value: "2" },
+    });
+    fireEvent.change(screen.getByLabelText(/Purchase Price/i), {
+      target: { value: "10" },
+    });
+
+    await act(async () => {
+      fireEvent.click(screen.getByRole("button", { name: /Add Stock/i }));
+    });
+
+    expect(addOrMergeStockMock).not.toHaveBeenCalled();
+    expect(
+      screen.getByText(/Network error. Please try again./i),
+    ).toBeInTheDocument();
   });
 });
