@@ -106,7 +106,7 @@ describe("App component", () => {
         symbol: "AAPL",
         quantity: 2,
         purchasePrice: 10,
-        currentPrice: 0,
+        currentPrice: null,
       });
     });
 
@@ -130,7 +130,7 @@ describe("App component", () => {
         symbol: "AAPL",
         quantity: 2,
         purchasePrice: 10,
-        currentPrice: 0,
+        currentPrice: null,
       });
 
       // Act: add same stock symbol with different quantity & purchase price
@@ -140,7 +140,7 @@ describe("App component", () => {
         symbol: "AAPL",
         quantity: 3,
         purchasePrice: 20,
-        currentPrice: 0,
+        currentPrice: null,
       });
     });
 
@@ -167,7 +167,7 @@ describe("App component", () => {
         symbol: "AAPL",
         quantity: 2,
         purchasePrice: 10,
-        currentPrice: 0,
+        currentPrice: null,
       });
 
       // Act: update the price
