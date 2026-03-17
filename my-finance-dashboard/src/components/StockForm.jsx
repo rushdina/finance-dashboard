@@ -87,9 +87,9 @@ export default function StockForm() {
 
   return (
     <header className="header">
-      <div className="container">
+      <div className="container" aria-describedby={apiError ? "form-api-error" : undefined}>
         <h1 className="dashboard-heading">Finance Dashboard</h1>
-        <form className="stock-form" onSubmit={handleSubmit}>
+        <form className="stock-form" onSubmit={handleSubmit} aria-busy={isSubmitting}>
           <div className="stock-label-input">
             <label htmlFor="symbol">Stock Symbol:</label>
             <input
@@ -100,10 +100,12 @@ export default function StockForm() {
               onChange={handleInputChange}
               placeholder="AAPL"
               className={`form-input ${symbolError ? "input-error" : ""}`}
+              aria-invalid={symbolError ? "true" : "false"}
+              aria-describedby={symbolError ? "symbol-error" : undefined}
               required
             />
             {symbolError && (
-              <p className="error-text" aria-live="polite">
+              <p id="symbol-error" className="error-text" aria-live="polite">
                 {symbolError}
               </p>
             )}
@@ -143,11 +145,12 @@ export default function StockForm() {
             disabled={isSubmitting}
             className={`add-stock-btn ${symbolError ? "center-btn" : "end-btn"}`}
           >
-            {isSubmitting ? "Adding..." : "Add Stock"}
+            {isSubmitting ? "Adding stock..." : "Add Stock"}
           </button>
         </form>
         {apiError && (
           <p
+            id="form-api-error"
             className="error-text api-error-text"
             aria-live="polite"
             style={{ textAlign: "center", marginTop: "10px" }}
