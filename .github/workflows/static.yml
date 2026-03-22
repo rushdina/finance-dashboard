@@ -1,4 +1,3 @@
-# Workflow for deploying a nested React Vite project static content to GitHub Pages
 name: CI/CD React Vite to GitHub Pages
 
 env:
@@ -30,11 +29,6 @@ jobs:
     name: Run Lint & Unit Tests # Display name of the job
     runs-on: ubuntu-latest # Run this job on GitHub-hosted Linux virtual machine
 
-    # Set default working directory for all run commands in this job
-    defaults:
-      run:
-        working-directory: "./my-finance-dashboard"
-
     # Steps: sequential commands to run inside the job
     steps:
       - name: Checkout repository
@@ -45,7 +39,7 @@ jobs:
         with:
           node-version: 24
           cache: npm
-          cache-dependency-path: "./my-finance-dashboard/package-lock.json"
+          cache-dependency-path: "package-lock.json"
         # Installs Node.js, caches node_modules for faster builds
 
       - name: Install dependencies
@@ -81,18 +75,14 @@ jobs:
         with:
           node-version: "24" # current local version
           cache: "npm" # speeds up builds by caching node_modules
-          cache-dependency-path: "./my-finance-dashboard/package-lock.json"
 
       # 3c. Step: install dependencies
       - name: Install dependencies
         run: npm install # Install all npm packages for build
-        working-directory: "./my-finance-dashboard"
-        # working-directory points to your nested project folder
 
       # 3d. Step: build the project
       - name: Build project
         run: npm run build
-        working-directory: "./my-finance-dashboard"
         # Creates dist/ folder with production-ready static files
 
       # 3e. Step: setup GitHub Pages environment
@@ -104,7 +94,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4
         with:
-          path: "./my-finance-dashboard/dist"
+          path: "./dist"
           # Upload the production build folder (dist) to GitHub Pages workflow
           # tells GitHub which files to deploy
 
