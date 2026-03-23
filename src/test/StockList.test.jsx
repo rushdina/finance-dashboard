@@ -40,6 +40,7 @@ describe("StockList component", () => {
     expect(
       screen.getByRole("heading", { level: 2, name: /Stock List/i }),
     ).toBeInTheDocument(); // heading <h2>
+
     expect(screen.getByText(/No stocks added yet./i)).toBeInTheDocument();
 
     // Searches for an element with role="list" (<ul> or <ol>)

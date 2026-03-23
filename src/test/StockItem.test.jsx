@@ -4,9 +4,6 @@ import StockItem from "../components/StockItem";
 
 // Test suite for StockItem.jsx
 describe("StockItem component", () => {
-  const calculateProfitLossMock = (stock) =>
-    (stock.currentPrice - stock.purchasePrice) * stock.quantity;
-
   // Test 1: Renders a single stock
   it("renders stock item correctly", () => {
     const stock = {
@@ -17,9 +14,7 @@ describe("StockItem component", () => {
       currentPrice: 12,
     };
 
-    render(
-      <StockItem stock={stock} calculateProfitLoss={calculateProfitLossMock} />,
-    );
+    render(<StockItem stock={stock} profitLoss={4} />);
 
     // Finds the elements and checks its full string
     expect(screen.getByText(/Symbol:/i)).toHaveTextContent("Symbol: AAPL");
@@ -35,7 +30,7 @@ describe("StockItem component", () => {
     ); // \ is escape character
   });
 
-  // Test 2: Correct profit math calculation
+  // Test 2: Render plus sign for profit
   it("calculates profit correctly with + sign", () => {
     const stock = {
       id: "1",
@@ -50,9 +45,7 @@ describe("StockItem component", () => {
      * = (12 - 10) * 2 = +4
      */
 
-    render(
-      <StockItem stock={stock} calculateProfitLoss={calculateProfitLossMock} />,
-    );
+    render(<StockItem stock={stock} profitLoss={4} />);
 
     // (12 - 10) * 2 = +4
     expect(screen.getByText(/Profit\/Loss:/i)).toHaveTextContent(
@@ -60,8 +53,8 @@ describe("StockItem component", () => {
     );
   });
 
-  // Test 3: Correct loss math calculation
-  it("calculates loss correctly with - sign", () => {
+  // Test 3: Render minus sign for loss
+  it("shows negative loss with minus sign", () => {
     const stock = {
       id: "2",
       symbol: "IBM",
@@ -70,9 +63,7 @@ describe("StockItem component", () => {
       currentPrice: 20,
     };
 
-    render(
-      <StockItem stock={stock} calculateProfitLoss={calculateProfitLossMock} />,
-    );
+    render(<StockItem stock={stock} profitLoss={-60} />);
 
     // (20 - 50) * 2 = -60
     expect(screen.getByText(/Profit\/Loss:/i)).toHaveTextContent(
@@ -90,15 +81,13 @@ describe("StockItem component", () => {
       currentPrice: 50, // same as purchasePrice, profit/loss = 0
     };
 
-    render(
-      <StockItem stock={stock} calculateProfitLoss={calculateProfitLossMock} />,
-    );
+    render(<StockItem stock={stock} profitLoss={0} />);
 
     // Profit/Loss = (50 - 50) * 5 = 0
-    const profitLossElement = screen.getByText(/Profit\/Loss:/i);
-
     // Check displayed text, text should have no + or -
-    expect(profitLossElement).toHaveTextContent("Profit/Loss: $0.00");
+    expect(screen.getByText(/Profit\/Loss:/i)).toHaveTextContent(
+      "Profit/Loss: $0.00",
+    );
   });
 
   // Test 5: Shows "Loading price..." for null currentPrice
@@ -112,9 +101,7 @@ describe("StockItem component", () => {
     };
 
     // StockList receives the stock, maps through it, sees currentPrice is null, and renders
-    render(
-      <StockItem stock={stock} calculateProfitLoss={calculateProfitLossMock} />,
-    );
+    render(<StockItem stock={stock} profitLoss={null} />);
 
     // Assert: element exists in the DOM
     expect(screen.getByText(/Loading price.../i)).toBeInTheDocument();
