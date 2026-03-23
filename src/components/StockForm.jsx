@@ -7,7 +7,6 @@ export default function StockForm() {
   // useContext: Access the stock list state from the StockContext in the necessary components.
   const { addOrMergeStock, fetchStockData } = useContext(StockContext);
 
-  // Local states
   // useState: Manage the state of the stock form inputs.
   const [formInput, setFormInput] = useState({
     symbol: "",
@@ -21,6 +20,7 @@ export default function StockForm() {
 
   function handleInputChange(event) {
     const { name, value } = event.target;
+
     setFormInput((prevInput) => ({
       ...prevInput,
       [name]: value, // [event.target.name]: event.target.value
@@ -30,66 +30,74 @@ export default function StockForm() {
     setApiError("");
   }
 
-  function handleSubmit(event) {
+  // use async await because fetchStockData is asynchronous function returns a Promise
+  async function handleSubmit(event) {
     event.preventDefault();
 
     const symbol = formInput.symbol.trim().toUpperCase();
     setIsSubmitting(true);
 
     // Validate symbol
-    // use .then because fetchStockData is asynchronous function returns a Promise
-    fetchStockData(symbol).then((result) => {
-      // result is the resolved object returned from fetchStockData
-      if (result.error === "rate-limit") {
-        setApiError(
-          "Too many requests. Please wait a few seconds and try again.",
-        );
-        setIsSubmitting(false);
-        setSymbolError("");
-        return;
-      }
+    const result = await fetchStockData(symbol);
 
-      if (result.error === "invalid-symbol") {
-        setSymbolError(`Invalid Stock Symbol: ${symbol}`);
-        setIsSubmitting(false);
-        setApiError("");
-        return;
-      }
-
-      if (result.error === "network") {
-        setApiError("Network error. Please try again.");
-        setIsSubmitting(false);
-        setSymbolError("");
-        return;
-      }
-
-      // When symbol is valid, add price to stock list
-      addOrMergeStock({
-        id: nanoid(), // generate unique id for each symbol added
-        symbol,
-        quantity: parseInt(formInput.quantity),
-        purchasePrice: parseFloat(formInput.purchasePrice),
-        currentPrice: result.price,
-      });
-
-      // Clear form and error on success
-      setFormInput({
-        symbol: "",
-        quantity: "",
-        purchasePrice: "",
-      });
-
+    // result is the resolved object returned from fetchStockData
+    if (result.error === "rate-limit") {
+      setApiError(
+        "Too many requests. Please wait a few seconds and try again.",
+      );
       setSymbolError("");
+      setIsSubmitting(false);
+      return;
+    }
+
+    if (result.error === "invalid-symbol") {
+      setSymbolError(`Invalid Stock Symbol: ${symbol}`);
       setApiError("");
       setIsSubmitting(false);
+      return;
+    }
+
+    if (result.error === "network") {
+      setApiError("Network error. Please try again.");
+      setSymbolError("");
+      setIsSubmitting(false);
+      return;
+    }
+
+    // When symbol is valid, add price to stock list
+    addOrMergeStock({
+      id: nanoid(), // generate unique id for each symbol added
+      symbol,
+      quantity: parseInt(formInput.quantity, 10),
+      purchasePrice: parseFloat(formInput.purchasePrice),
+      currentPrice: result.price,
     });
+
+    // Clear form and error on success
+    setFormInput({
+      symbol: "",
+      quantity: "",
+      purchasePrice: "",
+    });
+
+    setSymbolError("");
+    setApiError("");
+    setIsSubmitting(false);
   }
 
   return (
     <header className="header">
-      <div className="container" aria-describedby={apiError ? "form-api-error" : undefined}>
+      <div
+        className="container"
+        aria-describedby={apiError ? "form-api-error" : undefined}
+      >
         <h1 className="dashboard-heading">Finance Dashboard</h1>
-        <form className="stock-form" onSubmit={handleSubmit} aria-busy={isSubmitting}>
+
+        <form
+          className="stock-form"
+          onSubmit={handleSubmit}
+          aria-busy={isSubmitting}
+        >
           <div className="stock-label-input">
             <label htmlFor="symbol">Stock Symbol:</label>
             <input
@@ -110,6 +118,7 @@ export default function StockForm() {
               </p>
             )}
           </div>
+
           <div className="stock-label-input">
             <label htmlFor="quantity">Quantity:</label>
             <input
@@ -125,6 +134,7 @@ export default function StockForm() {
               required
             />
           </div>
+
           <div className="stock-label-input">
             <label htmlFor="purchasePrice">Purchase Price:</label>
             <input
@@ -140,6 +150,7 @@ export default function StockForm() {
               required
             />
           </div>
+
           <button
             type="submit"
             disabled={isSubmitting}
@@ -148,12 +159,12 @@ export default function StockForm() {
             {isSubmitting ? "Adding stock..." : "Add Stock"}
           </button>
         </form>
+
         {apiError && (
           <p
             id="form-api-error"
             className="error-text api-error-text"
             aria-live="polite"
-            style={{ textAlign: "center", marginTop: "10px" }}
           >
             {apiError}
           </p>

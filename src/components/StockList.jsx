@@ -2,6 +2,7 @@ import "./StockList.css";
 import StockContext from "../context/StockContext";
 import { useContext, useEffect } from "react";
 import StockItem from "./StockItem";
+import { calculateProfitLoss } from "../utils/stockUtils";
 
 export default function StockList() {
   // useContext: Access the stock list state from the StockContext in the necessary components.
@@ -20,23 +21,18 @@ export default function StockList() {
     });
   }, [stocks, fetchStockData, updateStockPrice]);
 
-  function calculateProfitLoss(stock) {
-    if (stock.currentPrice === null) return null;
-    return (stock.currentPrice - stock.purchasePrice) * stock.quantity;
-  }
-
   return (
     <main className="container">
       <h2 className="stocklist-heading">Stock List</h2>
       {stocks.length === 0 ? (
-        <p style={{ textAlign: "center" }}>No stocks added yet.</p>
+        <p className="empty-state">No stocks added yet.</p>
       ) : (
         <ul className="stocklist-container">
           {stocks.map((stock) => (
             <StockItem
               key={stock.id}
               stock={stock}
-              calculateProfitLoss={calculateProfitLoss}
+              profitLoss={calculateProfitLoss(stock)}
             />
           ))}
         </ul>

@@ -3,11 +3,13 @@
 A React-based Finance Dashboard that allows users to track stocks they have purchased. Users can add stocks with quantity and purchase price, fetch the latest stock market prices using the `Alpha Vantage API`, and view real-time profit or loss for each stock.
 
 ## 🌐 Live Demo
+
 🔗 View app: https://rushdina.github.io/finance-dashboard/
 
-![Finance Dashboard Preview](./my-finance-dashboard/src/assets/screenshot-financeDashboard.png)
+![Finance Dashboard Preview](./src/assets/screenshot-financeDashboard.png)
 
 ## 🛠️ Technologies Used
+
 - **Frontend:** `React`, `JavaScript`, `CSS`
 - **State Management:** `Context API` – Centralized global stock state and shared logic between components
 - React Hooks:
@@ -19,6 +21,7 @@ A React-based Finance Dashboard that allows users to track stocks they have purc
 - **npm Packages:** `nanoid` – Generates unique IDs for stable React keys
 
 ## ✨ Features
+
 - Add stocks with symbol, quantity, and purchase price
 - Validate symbols using `Alpha Vantage API`
 - Fetch and display current stock prices
@@ -29,6 +32,7 @@ A React-based Finance Dashboard that allows users to track stocks they have purc
 - Responsive UI using `Flexbox` and `CSS Grid`
 
 ## 💻 Installation & Running Locally
+
 1. **Clone the repository**
 
 ```bash
@@ -43,6 +47,7 @@ npm install
 ```
 
 3. **Set up environment variables**
+
 - Create a `.env` file in the root folder and add your `Alpha Vantage API` key:
 
 ```bash
@@ -60,18 +65,22 @@ npm run dev
 Open the localhost URL shown in your terminal (usually `http://localhost:5173`).
 
 ## 🚀 Usage
+
 1. Enter a **stock symbol**, **quantity**, and **purchase price**.
 2. Click **Add Stock**.
 3. The stock appears in the list with:
-  - Current market price (fetched from API)
-  - Calculated profit/Loss (color-coded)
+
+- Current market price (fetched from API)
+- Calculated profit/Loss (color-coded)
 
 Additional behaviour:
+
 - Duplicate symbols automatically merge and recalculate average purchase price.
 - Invalid stock symbols show inline validation errors.
 - API rate limit or network errors display system-level messages below the form.
 
 ## 🧠 Challenges Encountered
+
 - **API Rate Limits**: Alpha Vantage free-tierlimits requests (25 per day and 1 per second).
   - Solution: Implemented error handling for rate limit responses and displayed user-friendly error messages when the limit is reached.
 - **Duplicate API Calls**: Both `StockForm` and `StockList` could trigger API requests.
@@ -86,6 +95,7 @@ Additional behaviour:
   - Solution: Created mock `Context` providers and isolated logic functions to test behaviour independently.
 
 ## ✨ Improvements Beyond Baseline Requirements
+
 - **Enhanced User Experience**:
   - Inline validation for invalid stock symbols
   - Separate error messages for input errors vs API errors
@@ -98,15 +108,17 @@ Additional behaviour:
 - **Performance Considerations**
   - Memoized API functions with `useCallback`
   - Conditional state updates to avoid unnecessary re-renders
- 
+
 ## 📚 What I Learned
+
 - React state management using `Context API` and Hooks
 - API integration and asynchronous data handling
 - Error handling for API limits, network issues, and invalid inputs
 - Immutable state updates for merging and updating stock data
 - Unit testing with `Vitest` and `React Testing Library`
- 
+
 ## 💡 Future Improvements
+
 - Manual refresh button to update stock prices
 - Persistent storage using localStorage or a backend database
 - Stock price history visualization

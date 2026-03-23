@@ -36,6 +36,27 @@
   padding-top: 10px;
 }
 
+.empty-state {
+  text-align: center;
+}
+
+.api-error-text {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.profit-positive {
+  color: green;
+}
+
+.profit-negative {
+  color: red;
+}
+
+.profit-neutral {
+  color: gray;
+}
+
 @media (min-width: 780px) {
   .stocklist-container {
     grid-template-columns: repeat(
