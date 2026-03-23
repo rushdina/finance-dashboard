@@ -1,6 +1,6 @@
 # 💹 Finance Dashboard
 
-A React-based Finance Dashboard that allows users to track stocks they have purchased. Users can add stocks with quantity and purchase price, fetch the latest stock market prices using the `Alpha Vantage API`, and view real-time profit or loss for each stock.
+A React-based Finance Dashboard that allows users to track stock investments. Users can add stocks with quantity and purchase price, fetch real-time market prices using the `Alpha Vantage API`, and view profit or loss dynamically.
 
 ## 🌐 Live Demo
 
@@ -10,26 +10,83 @@ A React-based Finance Dashboard that allows users to track stocks they have purc
 
 ## 🛠️ Technologies Used
 
-- **Frontend:** `React`, `JavaScript`, `CSS`
-- **State Management:** `Context API` – Centralized global stock state and shared logic between components
-- React Hooks:
-  - `useState`: Manages form inputs and stock list state
-  - `useEffect`: Handles conditional fetching of stock prices
-  - `useContext`: Accesses shared state and functions from `StockContext`
-  - `useCallback`: Memoizes API fetch function to avoid unnecessary recreations
+- **Frontend:** `React (Vite)`, `JavaScript`, `CSS`
+- **State Management:** `Context API` – Centralises global stock state and shared logic across components
+- **React Hooks:**
+  - `useState`: Manages component state
+  - `useEffect`: Handles conditional API fetching
+  - `useContext`: Provides shared state across components
+  - `useCallback`: Stabilises function references for performance optimisation
+  - `useMemo`: Memoises context value to reduce unnecessary re-renders
 - **External APIs:** [Alpha Vantage API](https://www.alphavantage.co/documentation/) – Provides real-time stock market data
 - **npm Packages:** `nanoid` – Generates unique IDs for stable React keys
+- **Testing:** `Vitest`, `React Testing Library`
 
 ## ✨ Features
 
 - Add stocks with symbol, quantity, and purchase price
-- Validate symbols using `Alpha Vantage API`
-- Fetch and display current stock prices
+- Fetch real-time stock prices via API
 - Compute and display color-coded profit/loss
-- Automatically merge duplicate stocks and recalculate average purchase price
-- Handle API rate limit, network errors, and invalid symbols
-- Display loading states while fetching prices
-- Responsive UI using `Flexbox` and `CSS Grid`
+- Automatically merge duplicate stocks with recalculated average purchase price
+- Handle API errors (rate limits, invalid symbols, network issues)
+- Responsive UI using `Flexbox` and `CSS Grid` with loading indicators
+
+## 🧩 Architecture Overview
+
+The application is structured using a modular and scalable frontend architecture:
+
+- **Components** → UI rendering (`StockForm`, `StockList`, `StockItem`)
+- **Custom Hook** (`useStocks`) → Centralised state and business logic
+- **Context API** → Shared global state across components
+- **API Layer** (`stockAPI.js`) → External data fetching
+- **Utility Layer** (`stockUtils.js`) → Reusable calculations
+
+This separation improves maintainability, reusability, and scalability.
+
+## 🧠 Key Challenges & Solutions
+
+**1. Shared State Management**  
+Managing stock data across multiple components led to duplicated logic.  
+**Solution:** Centralised state and business logic using a custom hook (`useStocks`) with Context API.
+
+**2. Unnecessary Re-renders with Context**  
+Context updates caused all consumers to re-render.  
+**Solution:** Optimised provider value using `useMemo` and stabilised functions with `useCallback`.
+
+**3. Scalable Code Structure**  
+Tightly coupled API, state, and UI logic reduced maintainability.  
+**Solution:** Refactored into modular layers (custom hook, API service, utility functions).
+
+**4. API Reliability & Edge Cases**  
+Handling rate limits, invalid symbols, and network errors.  
+**Solution:** Implemented structured error handling with consistent response states and UI feedback.
+
+**5. Testing Modularised Architecture**  
+Refactoring introduced multiple logic layers to test.  
+**Solution:** Adopted layered testing (components, hooks, utilities, API with mocks).
+
+## ✨ Improvements Beyond Baseline Requirements
+
+- **Enhanced User Experience**:
+  - Inline validation for invalid stock symbols
+  - Separate error messages for input errors vs API errors
+  - Loading indicators when fetching stock prices
+  - Responsive interface for different screen sizes
+- **Improved State Logic**:
+  - Automatically merges duplicate stocks
+  - Recalculates average purchase price dynamically
+  - Uses nanoid to generate stable React keys
+- **Performance Considerations**:
+  - Memoized API functions with `useCallback`, `useMemo`
+  - Conditional state updates to avoid unnecessary re-renders
+
+## 📚 Key Learnings
+
+- Designed scalable frontend architecture using custom hooks, `Context API`, and modular layers
+- Improved understanding of React rendering behaviour and performance optimisation (`useMemo`, `useCallback`)
+- Built reusable component-based UI with clear separation of concerns
+- Implemented structured error handling for real-world API constraints (rate limits, invalid data, network failures)
+- Applied layered testing strategies across components, hooks, utilities, and API using `Vitest` and `React Testing Library`
 
 ## 💻 Installation & Running Locally
 
@@ -63,59 +120,6 @@ npm run dev
 ```
 
 Open the localhost URL shown in your terminal (usually `http://localhost:5173`).
-
-## 🚀 Usage
-
-1. Enter a **stock symbol**, **quantity**, and **purchase price**.
-2. Click **Add Stock**.
-3. The stock appears in the list with:
-
-- Current market price (fetched from API)
-- Calculated profit/Loss (color-coded)
-
-Additional behaviour:
-
-- Duplicate symbols automatically merge and recalculate average purchase price.
-- Invalid stock symbols show inline validation errors.
-- API rate limit or network errors display system-level messages below the form.
-
-## 🧠 Challenges Encountered
-
-- **API Rate Limits**: Alpha Vantage free-tierlimits requests (25 per day and 1 per second).
-  - Solution: Implemented error handling for rate limit responses and displayed user-friendly error messages when the limit is reached.
-- **Duplicate API Calls**: Both `StockForm` and `StockList` could trigger API requests.
-  - Solution: Centralized the API fetch function in `App.jsx` and shared it through `Context API` so components reuse the same logic.
-- **Invalid Stock Symbols**: Users could attempt to add invalid stock symbols.
-  - Solution: Used optional chaining (`?.`) and `parseFloat()` validation to detect invalid API responses and display inline errors.
-- **Duplicate Stocks**: Users might add the same stock multiple times.
-  - Solution: Used `.find()` to detect existing stocks and `.map()` to merge quantities while recalculating the average purchase price.
-- **Preventing Unnecessary API Calls**: State updates could trigger repeated fetch requests.
-  - Solution: Added **guard conditions** to only fetch prices when currentPrice is null.
-- **Testing Application Logic**: Testing logic involving context and API calls was challenging.
-  - Solution: Created mock `Context` providers and isolated logic functions to test behaviour independently.
-
-## ✨ Improvements Beyond Baseline Requirements
-
-- **Enhanced User Experience**:
-  - Inline validation for invalid stock symbols
-  - Separate error messages for input errors vs API errors
-  - Loading indicators when fetching stock prices
-  - Responsive interface for different screen sizes
-- **Improved State Logic**:
-  - Automatically merges duplicate stocks
-  - Recalculates average purchase price dynamically
-  - Uses nanoid to generate stable React keys
-- **Performance Considerations**
-  - Memoized API functions with `useCallback`
-  - Conditional state updates to avoid unnecessary re-renders
-
-## 📚 What I Learned
-
-- React state management using `Context API` and Hooks
-- API integration and asynchronous data handling
-- Error handling for API limits, network issues, and invalid inputs
-- Immutable state updates for merging and updating stock data
-- Unit testing with `Vitest` and `React Testing Library`
 
 ## 💡 Future Improvements
 
